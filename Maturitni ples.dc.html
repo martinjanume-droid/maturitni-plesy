@@ -205,13 +205,13 @@
      <div id="mbpin" style="position:sticky;top:70px;overflow:hidden;padding:24px 0">
       <div id="mbtrack" style="display:flex;gap:22px;will-change:transform">
       <sc-for list="{{ phases }}" as="p" hint-placeholder-count="3">
-        <a href="{{ p.href }}" class="mbcard" style="flex:0 0 clamp(300px,42vw,520px);background:var(--card);color:var(--fg);border:1px solid var(--bd);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none">
-          <div style="aspect-ratio:16/9;overflow:hidden;background:#1a1c22"><img src="{{ p.img }}" alt="{{ p.title }}" draggable="false" style="width:100%;height:100%;object-fit:cover;display:block"></div>
-          <div style="padding:28px 32px 34px;display:flex;flex-direction:column;gap:12px;flex:1">
-            <div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:52px;letter-spacing:-1.5px;color:rgba(236,233,225,.12);line-height:1">{{ p.num }}</span><span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.5px;color:var(--acc)">{{ p.when }}</span></div>
-            <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:30px;letter-spacing:-.5px">{{ p.title }}</div>
-            <div style="font-size:15.5px;line-height:1.55;color:var(--mut);flex:1">{{ p.desc }}</div>
-            <span class="mblink" style="color:var(--acc);font-size:14.5px;font-weight:500;align-self:flex-start;margin-top:4px">Otevřít sekci →</span>
+        <a href="{{ p.href }}" class="mbcard" style="flex:0 0 100%;background:var(--card);color:var(--fg);border:1px solid var(--bd);border-radius:10px;overflow:hidden;display:grid;grid-template-columns:1.1fr .9fr;text-decoration:none;min-height:460px">
+          <div style="overflow:hidden;background:#1a1c22"><img src="{{ p.img }}" alt="{{ p.title }}" draggable="false" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div style="padding:52px 56px;display:flex;flex-direction:column;gap:16px;justify-content:center">
+            <div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:76px;letter-spacing:-2px;color:rgba(236,233,225,.12);line-height:1">{{ p.num }}</span><span style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.5px;color:var(--acc)">{{ p.when }}</span></div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:40px;letter-spacing:-.8px">{{ p.title }}</div>
+            <div style="font-size:17px;line-height:1.6;color:var(--mut)">{{ p.desc }}</div>
+            <span class="mblink" style="color:var(--acc);font-size:15px;font-weight:500;align-self:flex-start;margin-top:8px">Otevřít sekci →</span>
           </div>
         </a>
       </sc-for>
@@ -428,7 +428,7 @@
           <p style="font-size:17px;line-height:1.55;color:var(--mut);margin:0 0 28px">Ať už řešíte kapelu, sál, nebo ozvučení — ozveme se do dvou pracovních dnů s konkrétním návrhem. Bez závazku a bez tlaku.</p>
           <div style="display:flex;flex-direction:column;gap:12px">
             <a href="tel:+420775258844" class="mblink" style="display:inline-flex;align-items:center;gap:12px;color:var(--fg);font-size:17px;align-self:flex-start"><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut2);width:64px">TEL</span>+420 775 25 88 44</a>
-            <a href="mailto:info@mbservisproduction.cz" class="mblink" style="display:inline-flex;align-items:center;gap:12px;color:var(--fg);font-size:17px;align-self:flex-start"><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut2);width:64px">E-MAIL</span>info@mbservisproduction.cz</a>
+            <a href="/cdn-cgi/l/email-protection#254c4b434a654847564057534c5655574a415046514c4a4b0b465f" class="mblink" style="display:inline-flex;align-items:center;gap:12px;color:var(--fg);font-size:17px;align-self:flex-start"><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut2);width:64px">E-MAIL</span><span class="__cf_email__" data-cfemail="0960676f6649646b7a6c7b7f607a797b666d7c6a7d606667276a73">[email&#160;protected]</span></a>
           </div>
         </div>
 
@@ -476,7 +476,7 @@
         <div style="display:flex;flex-direction:column;gap:10px">
           <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--mut2);margin-bottom:4px">Kontakt</div>
           <a href="tel:+420775258844" class="mblink" style="color:var(--mut);font-size:14.5px;align-self:flex-start">+420 775 25 88 44</a>
-          <a href="mailto:info@mbservisproduction.cz" class="mblink" style="color:var(--mut);font-size:14.5px;align-self:flex-start">info@mbservisproduction.cz</a>
+          <a href="/cdn-cgi/l/email-protection#fa93949c95ba9798899f888c93898a88959e8f998e939594d49980" class="mblink" style="color:var(--mut);font-size:14.5px;align-self:flex-start"><span class="__cf_email__" data-cfemail="3950575f5679545b4a5c4b4f504a494b565d4c5a4d505657175a43">[email&#160;protected]</span></a>
         </div>
       </div>
     </div>
@@ -485,7 +485,7 @@
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = { sent: false };
 
