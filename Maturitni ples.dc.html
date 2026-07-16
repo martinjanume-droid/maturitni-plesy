@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/enterprise-ai-design-system-2c48a4d6-e953-4905-8c3e-be5097455d64/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/enterprise-ai-design-system-2c48a4d6-e953-4905-8c3e-be5097455d64/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/enterprise-ai-design-system-2c48a4d6-e953-4905-8c3e-be5097455d64/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/enterprise-ai-design-system-2c48a4d6-e953-4905-8c3e-be5097455d64/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/enterprise-ai-design-system-2c48a4d6-e953-4905-8c3e-be5097455d64/styles.css">
+  <script src="_ds/enterprise-ai-design-system-2c48a4d6-e953-4905-8c3e-be5097455d64/_ds_bundle.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script type="module">import * as OGL from 'https://esm.sh/ogl@1.0.11';window.OGL=OGL;window.dispatchEvent(new Event('ogl-ready'));</script>
+
+  <style>
+    :root{--bg:#0a0b0d;--panel:#101216;--card:#16181d;--fg:#ece9e1;--mut:#9a9ea7;--mut2:#6f747d;--bd:#23262e;--acc:#e6963a;--ink:#0a0b0d}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:#0a0b0d;color:#ece9e1;font-family:'Inter',Arial,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+    *{box-sizing:border-box}
+    a{color:#e6963a;text-decoration:none}
+    a:hover{opacity:.75}
+    [id]{scroll-margin-top:92px}
+    ::selection{background:#e6963a;color:#0a0b0d}
+    input::placeholder,textarea::placeholder{color:#6f747d}
+    .mbserif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
+    @keyframes mbmarq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .mb-anim .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+    .mb-anim .reveal.in{opacity:1;transform:none}
+    .mbzoom{overflow:hidden}
+    .mbzoom img{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+    .mbzoom:hover img{transform:scale(1.06)}
+    .mbpar{will-change:transform;transition:box-shadow .4s ease}
+    .mbpar img{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+    .mbpar:hover{box-shadow:0 0 0 1px var(--acc),0 30px 64px -26px rgba(0,0,0,.85)}
+    .mbpar:hover img{transform:scale(1.07)}
+    .mbcard{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease,border-color .35s ease}
+    .mbcard:hover{transform:translateY(-6px);box-shadow:0 22px 46px -24px rgba(0,0,0,.7);border-color:#3a3d46}
+    .mblink{position:relative;transition:opacity .2s}
+    .mblink::after{content:"";position:absolute;left:0;bottom:-3px;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+    .mblink:hover::after{transform:scaleX(1)}
+    .mb-mag{transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+    #mbwave{opacity:0;transition:opacity 1s ease}
+    .mb-anim #mbwave{opacity:1}
+    .mb-anim #mbreveal{opacity:1}
+    #mbtrack{scrollbar-width:none;-ms-overflow-style:none}
+    #mbtrack::-webkit-scrollbar{display:none}
+    #mbcursor{position:fixed;top:0;left:0;width:9px;height:9px;border-radius:50%;background:#fff;border:0 solid #fff;box-sizing:border-box;mix-blend-mode:difference;pointer-events:none;z-index:9999;opacity:0;transition:width .25s cubic-bezier(.2,.7,.2,1),height .25s cubic-bezier(.2,.7,.2,1),background .25s,border-width .25s,opacity .3s}
+    .mb-anim #mbcursor{opacity:1}
+    #mbcursor.big{width:46px;height:46px;background:rgba(230,150,58,.18);border-width:1.5px;border-color:#e6963a;mix-blend-mode:normal}
+    @media (hover:none),(pointer:coarse){#mbcursor{display:none!important}}
+    #mbroot.mb-anim,#mbroot.mb-anim a,#mbroot.mb-anim button{cursor:none}
+    #mbroot.mb-anim input,#mbroot.mb-anim textarea{cursor:text}
+    /* contextual cursor label */
+    #mbcurlabel{position:fixed;top:0;left:0;z-index:9998;pointer-events:none;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--ink);background:var(--acc);padding:6px 10px;border-radius:999px;opacity:0;transform:translate(-50%,14px) scale(.8);transition:opacity .25s,transform .25s;white-space:nowrap}
+    #mbcurlabel.on{opacity:1;transform:translate(-50%,18px) scale(1)}
+    /* grain overlay */
+    #mbgrain{position:fixed;inset:0;z-index:8000;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+    /* shrinking nav */
+    #mbhead{transition:padding .35s ease,background .35s ease}
+    #mbhead.shrink{background:rgba(10,11,13,.94)}
+    #mbhead.shrink .mbheadinner{padding-top:9px;padding-bottom:9px}
+    #mbhead .mbheadinner{transition:padding .35s ease}
+    /* button fill-left */
+    .mbbtn{position:relative;overflow:hidden;z-index:0}
+    .mbbtn::before{content:"";position:absolute;inset:0;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.7,.2,1);z-index:-1}
+    .mbbtn:hover::before{transform:scaleX(1)}
+    .mbbtn.inv::before{background:var(--fg)}
+    /* pricing cards */
+    .mbplan{transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s ease,border-color .4s ease,background-color .4s ease}
+    .mbplan .mbpsweep{position:absolute;inset:0;background:var(--acc);transform:translateY(101%);transition:transform .5s cubic-bezier(.76,0,.24,1);z-index:0;pointer-events:none}
+    .mbplan:hover{transform:translateY(-10px);box-shadow:0 30px 70px -30px rgba(230,150,58,.55);border-color:var(--acc)}
+    .mbplan:hover .mbpsweep{transform:translateY(0)}
+    .mbplan > *{position:relative;z-index:1}
+    /* on hover everything flips to ink-on-orange */
+    .mbplan:hover .mbp-fg,.mbplan:hover .mbp-mut,.mbplan:hover .mbp-tag,.mbplan:hover .mbp-check,.mbplan:hover .mbp-price,.mbplan:hover .mbp-unit{color:var(--ink)!important;transition:color .35s ease}
+    .mbplan:hover .mbp-div{border-color:rgba(10,11,13,.28)!important;transition:border-color .35s ease}
+    .mbplan:hover .mbp-badge{background:var(--ink);color:var(--acc)}
+    .mbplan:hover .mbp-cta{background:var(--ink)!important;color:var(--acc)!important;border-color:var(--ink)!important;transition:background .35s ease,color .35s ease,border-color .35s ease}
+    .mbp-fg,.mbp-mut,.mbp-tag,.mbp-check,.mbp-price,.mbp-unit,.mbp-div,.mbp-cta,.mbp-badge{transition:color .35s ease,background .35s ease,border-color .35s ease}
+    /* page-load wipe */
+    #mbwipe{position:fixed;inset:0;z-index:10000;background:var(--bg);pointer-events:none;transform:translateY(0);transition:transform .9s cubic-bezier(.76,0,.24,1)}
+    #mbwipe.up{transform:translateY(-100%)}
+    #mbwipe .wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:1;transition:opacity .4s}
+    #mbwipe.up .wm{opacity:0}
+  </style>
+</helmet>
+
+<div id="mbroot" style="min-height:100vh">
+  <div id="mbcursor" aria-hidden="true"></div>
+  <div id="mbcurlabel" aria-hidden="true"></div>
+  <div id="mbgrain" aria-hidden="true"></div>
+  <div id="mbwipe" aria-hidden="true"><div class="wm"><img src="assets/logo-white.svg" alt="" style="height:34px;display:block"></div></div>
+
+  <!-- LIGHTBOX -->
+  <div id="mblb" style="position:fixed;inset:0;z-index:9000;background:rgba(6,7,9,.94);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:56px">
+    <button id="mblbclose" aria-label="Zavřít" style="position:absolute;top:24px;right:28px;background:rgba(22,24,29,.7);border:1px solid var(--bd);color:var(--fg);width:46px;height:46px;border-radius:999px;font-size:22px;line-height:1;cursor:pointer">×</button>
+    <button id="mblbprev" aria-label="Předchozí" style="position:absolute;left:28px;top:50%;transform:translateY(-50%);background:rgba(22,24,29,.7);border:1px solid var(--bd);color:var(--fg);width:52px;height:52px;border-radius:999px;font-size:24px;line-height:1;cursor:pointer">‹</button>
+    <button id="mblbnext" aria-label="Další" style="position:absolute;right:28px;top:50%;transform:translateY(-50%);background:rgba(22,24,29,.7);border:1px solid var(--bd);color:var(--fg);width:52px;height:52px;border-radius:999px;font-size:24px;line-height:1;cursor:pointer">›</button>
+    <img id="mblbimg" src="" alt="" style="max-width:86vw;max-height:76vh;object-fit:contain;border-radius:10px;box-shadow:0 30px 90px -20px #000">
+    <div style="display:flex;align-items:center;gap:16px;font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.5px;color:var(--mut)"><span id="mblbpos" style="color:var(--acc)"></span><span id="mblbcap"></span></div>
+  </div>
+
+  <!-- NAV -->
+  <header id="mbhead" style="position:sticky;top:0;z-index:50;background:rgba(10,11,13,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd)">
+    <div class="mbheadinner" style="max-width:1200px;margin:0 auto;padding:15px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+      <a href="#top" style="display:flex;align-items:center"><img src="assets/logo-white.svg" alt="MB servis production" style="height:30px;display:block"></a>
+      <nav style="display:flex;align-items:center;gap:28px;font-size:14.5px">
+        <a href="#kapela" class="mblink" style="color:var(--mut)">Kapela &amp; DJ</a>
+        <a href="#sal" class="mblink" style="color:var(--mut)">Sál</a>
+        <a href="#ozvuceni" class="mblink" style="color:var(--mut)">Ozvučení</a>
+        <a href="#cenik" class="mblink" style="color:var(--mut)">Ceník</a>
+        <a href="#galerie" class="mblink" style="color:var(--mut)">Galerie</a>
+        <a href="#reference" class="mblink" style="color:var(--mut)">Reference</a>
+        <a href="#poptavka" class="mb-mag mbbtn inv" style="display:inline-flex;align-items:center;background:var(--acc);color:var(--ink);padding:10px 20px;border-radius:6px;font-weight:600;font-size:14px">Nezávazná poptávka</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" style="background:var(--bg);color:var(--fg);position:relative;overflow:hidden">
+    <div class="mbbgnum" data-speed="0.5" style="position:absolute;right:-2%;top:-6%;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:280px;line-height:1;letter-spacing:-8px;color:rgba(255,255,255,.03);pointer-events:none;user-select:none">PLES</div>
+    <canvas id="mbwave" style="position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0"></canvas>
+    <div id="mbreveal" style="position:absolute;inset:0;z-index:1;pointer-events:none;background-image:linear-gradient(rgba(10,11,13,.5),rgba(10,11,13,.5)),url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&amp;q=80&amp;auto=format&amp;fit=crop');background-size:cover;background-position:center;opacity:0;transition:opacity .4s ease;-webkit-mask-image:radial-gradient(circle 160px at var(--mx,-300px) var(--my,-300px),#000 0%,rgba(0,0,0,.55) 55%,transparent 78%);mask-image:radial-gradient(circle 160px at var(--mx,-300px) var(--my,-300px),#000 0%,rgba(0,0,0,.55) 55%,transparent 78%)"></div>
+    <div style="max-width:1200px;margin:0 auto;padding:80px 40px 90px;position:relative;z-index:2">
+      <div style="display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center">
+        <div data-reveal class="reveal">
+          <div style="display:inline-flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--acc);margin-bottom:26px"><span style="width:28px;height:1px;background:var(--acc);display:inline-block"></span>Maturitní ples od A do Z</div>
+          <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:72px;line-height:.98;letter-spacing:-2px;color:var(--fg);margin:0 0 26px">Kapela, sál<br>i technika.<br><span class="mbserif" style="color:var(--acc);font-size:80px;letter-spacing:-1px">Vy si užijete ples.</span></h1>
+          <p style="font-size:19px;line-height:1.55;color:var(--mut);max-width:500px;margin:0 0 34px">Chystáte maturák a nevíte, kde začít? Poradíme s kapelou, pomůžeme ověřit sál a ozvučíme celý večer — od nástupu tříd po diskotéku. Vy řešíte zábavu, my hlídáme, aby všechno klaplo.</p>
+          <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+            <a href="#poptavka" class="mb-mag mbbtn" data-cur="Poptat" style="display:inline-flex;align-items:center;background:var(--fg);color:var(--ink);padding:15px 28px;border-radius:6px;font-weight:600;font-size:15px">Nezávazná poptávka</a>
+            <a href="#osa" class="mblink" style="color:var(--fg);font-size:15px">Jak to celé probíhá →</a>
+          </div>
+        </div>
+        <div data-reveal class="reveal" style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:16px;transition-delay:.12s">
+          <div class="mbpar" data-depth="0.6" style="grid-row:span 2;border-radius:12px;overflow:hidden;box-shadow:0 30px 60px -28px rgba(0,0,0,.8);aspect-ratio:3/5;background:#1a1c22">
+            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&amp;q=80&amp;auto=format&amp;fit=crop" alt="Rozjetý parket na plese" style="width:100%;height:100%;object-fit:cover;display:block">
+          </div>
+          <div class="mbpar" data-depth="1.15" style="border-radius:12px;overflow:hidden;aspect-ratio:1/1;background:#1a1c22">
+            <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Kapela na pódiu" style="width:100%;height:100%;object-fit:cover;display:block">
+          </div>
+          <div class="mbpar" data-depth="1.5" style="border-radius:12px;overflow:hidden;aspect-ratio:1/1;background:#1a1c22">
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Mixážní pult" style="width:100%;height:100%;object-fit:cover;display:block">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK NAV -->
+  <section style="background:var(--bg);border-top:1px solid var(--bd)">
+    <div style="max-width:1200px;margin:0 auto;padding:20px 40px;display:flex;align-items:center;gap:26px;flex-wrap:wrap">
+      <span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--mut2)">Hledáte konkrétně?</span>
+      <a href="#kapela" class="mblink" style="color:var(--fg);font-size:15.5px">Kapelu na ples →</a>
+      <a href="#sal" class="mblink" style="color:var(--fg);font-size:15.5px">Sál na ples →</a>
+      <a href="#ozvuceni" class="mblink" style="color:var(--fg);font-size:15.5px">Ozvučení akce →</a>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <section style="background:var(--acc);overflow:hidden">
+    <div style="display:flex;width:max-content;animation:mbmarq 44s linear infinite">
+      <sc-for list="{{ marqHalves }}" as="mh" hint-placeholder-count="2">
+        <div style="display:flex;align-items:center;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:22px;letter-spacing:-.3px;color:var(--ink);padding:14px 0;flex:0 0 auto">
+          <sc-for list="{{ marqItems }}" as="mi" hint-placeholder-count="14">
+            <span style="padding:0 24px;white-space:nowrap">{{ mi }}</span><span class="mbserif" style="font-size:26px">·</span>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section style="background:var(--panel)">
+    <div style="max-width:1200px;margin:0 auto;padding:48px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:0">
+      <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
+        <div data-reveal class="reveal" style="padding:6px 28px;border-left:1px solid var(--bd)">
+          <div style="display:flex;align-items:baseline;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:48px;letter-spacing:-1.6px;color:var(--fg);line-height:1"><span data-count="{{ st.num }}" data-suffix="{{ st.suffix }}">0</span></div>
+          <div style="font-size:14.5px;line-height:1.4;color:var(--mut);margin-top:10px">{{ st.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- TIMELINE (pinned horizontal) -->
+  <section id="osa" style="max-width:1200px;margin:0 auto;padding:92px 40px 28px">
+    <div data-reveal class="reveal" style="max-width:680px;margin-bottom:44px">
+      <div style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut2);margin-bottom:18px">Jak to probíhá</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:46px;line-height:1.03;letter-spacing:-1px;color:var(--fg);margin:0 0 16px">Příprava plesu má <span class="mbserif" style="font-size:50px;color:var(--acc)">tři fáze.</span> Zvládnete je v klidu.</h2>
+      <p style="font-size:18px;line-height:1.5;color:var(--mut);margin:0">Nemusíte řešit všechno naráz. Podle toho, jak daleko jste, začněte tam, kde se zrovna nacházíte — a projděte to postupně.</p>
+    </div>
+    <div data-reveal class="reveal" style="display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--bd);padding-top:16px">
+      <span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--mut2)">Fáze plesu — projíždějí se samy, jak scrollujete</span>
+      <span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--acc)">01 → 02 → 03</span>
+    </div>
+    <div id="mbpinouter" style="position:relative">
+     <div id="mbpin" style="position:sticky;top:70px;overflow:hidden;padding:24px 0">
+      <div id="mbtrack" style="display:flex;gap:22px;will-change:transform">
+      <sc-for list="{{ phases }}" as="p" hint-placeholder-count="3">
+        <a href="{{ p.href }}" class="mbcard" style="flex:0 0 clamp(300px,42vw,520px);background:var(--card);color:var(--fg);border:1px solid var(--bd);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none">
+          <div style="aspect-ratio:16/9;overflow:hidden;background:#1a1c22"><img src="{{ p.img }}" alt="{{ p.title }}" draggable="false" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div style="padding:28px 32px 34px;display:flex;flex-direction:column;gap:12px;flex:1">
+            <div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:52px;letter-spacing:-1.5px;color:rgba(236,233,225,.12);line-height:1">{{ p.num }}</span><span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.5px;color:var(--acc)">{{ p.when }}</span></div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:30px;letter-spacing:-.5px">{{ p.title }}</div>
+            <div style="font-size:15.5px;line-height:1.55;color:var(--mut);flex:1">{{ p.desc }}</div>
+            <span class="mblink" style="color:var(--acc);font-size:14.5px;font-weight:500;align-self:flex-start;margin-top:4px">Otevřít sekci →</span>
+          </div>
+        </a>
+      </sc-for>
+      </div>
+     </div>
+    </div>
+  </section>
+
+  <!-- #sal -->
+  <section id="sal" style="max-width:1200px;margin:0 auto;padding:96px 40px">
+    <div style="display:grid;grid-template-columns:.95fr 1.05fr;gap:56px;align-items:start">
+      <div data-reveal class="reveal" style="position:sticky;top:112px">
+        <div style="border-radius:12px;overflow:hidden;box-shadow:0 24px 60px -24px rgba(0,0,0,.7);aspect-ratio:4/5;background:#1a1c22">
+          <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1000&amp;q=80&amp;auto=format&amp;fit=crop" alt="Slavnostně nachystaný sál na ples" style="width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:10px;margin-top:18px;font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--mut2)"><span style="width:22px;height:1px;background:var(--mut2);display:inline-block"></span>Fáze 01 · Sál · 12–18 měsíců</div>
+      </div>
+      <div data-reveal class="reveal" style="transition-delay:.1s">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:56px;letter-spacing:-1.5px;color:rgba(236,233,225,.1);line-height:1;margin-bottom:8px">01</div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:44px;line-height:1.03;letter-spacing:-1px;color:var(--fg);margin:0 0 20px">Sály <span class="mbserif" style="font-size:48px;color:var(--acc)">nepronajímáme.</span> Ale poradíme líp než ten, kdo chce jen pronajmout.</h2>
+        <p style="font-size:18px;line-height:1.55;color:var(--mut);margin:0 0 30px">Rovnou na férovku: pronájem sálu u nás neseženete. Zato jsme jich po Vysočině i po republice ozvučovali desítky — a víme, který vypadá na fotkách skvěle a večer se v něm neslyšíte. Než někde podepíšete, projděte si tohle. Ušetří vám to nervy i peníze.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 32px;border-top:1px solid var(--bd)">
+          <sc-for list="{{ salChecks }}" as="c" hint-placeholder-count="6">
+            <div style="padding:22px 0;border-bottom:1px solid var(--bd)">
+              <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--acc)">{{ c.n }}</span><span style="font-weight:600;font-size:16px;color:var(--fg)">{{ c.title }}</span></div>
+              <div style="font-size:14.5px;line-height:1.5;color:var(--mut);padding-left:26px">{{ c.desc }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:32px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:28px 30px">
+          <div style="font-weight:600;font-size:18px;color:var(--fg);margin-bottom:6px">Pošlete nám název sálu.</div>
+          <p style="font-size:15px;line-height:1.5;color:var(--mut);margin:0 0 18px">Řekneme vám, co v něm funguje a co ne — z vlastní zkušenosti, ne z prospektu. Zdarma a bez závazku.</p>
+          <a href="#poptavka" style="display:inline-flex;align-items:center;background:var(--acc);color:var(--ink);padding:13px 24px;border-radius:6px;font-weight:600;font-size:14.5px">Zeptat se na konkrétní sál →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- #kapela -->
+  <section id="kapela" style="background:var(--panel);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)">
+    <div style="max-width:1200px;margin:0 auto;padding:96px 40px">
+      <div data-reveal class="reveal" style="max-width:680px;margin-bottom:46px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:56px;letter-spacing:-1.5px;color:rgba(236,233,225,.1);line-height:1;margin-bottom:8px">02</div>
+        <div style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut2);margin-bottom:16px">Fáze 02 · Kapela &amp; DJ · 6–9 měsíců</div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:46px;line-height:1.02;letter-spacing:-1px;color:var(--fg);margin:0 0 16px">Kdo bude hrát, <span class="mbserif" style="font-size:50px;color:var(--acc)">ten dělá večer.</span></h2>
+        <p style="font-size:18px;line-height:1.55;color:var(--mut);margin:0">Kapela nebo DJ rozhodne, jestli se tančí, nebo sedí. Máme prověřená jména, se kterými jezdíme roky — poslechněte si je a vyberte, co sedne vaší třídě.</p>
+      </div>
+
+      <div style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--mut2);margin-bottom:18px">Kapely</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:56px">
+        <sc-for list="{{ bands }}" as="band" hint-placeholder-count="4">
+          <div data-reveal class="reveal mbcard" style="background:var(--card);border:1px solid var(--bd);border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+            <div style="aspect-ratio:3/2;background:#1a1c22;overflow:hidden;position:relative">
+              <img src="{{ band.img }}" alt="{{ band.name }}" style="width:100%;height:100%;object-fit:cover;display:block">
+              <span style="position:absolute;top:12px;left:12px;background:rgba(10,11,13,.82);color:var(--fg);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;padding:5px 9px;border-radius:5px">{{ band.tag }}</span>
+            </div>
+            <div style="padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1">
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;letter-spacing:-.3px;color:var(--fg)">{{ band.name }}</div>
+              <div style="font-size:14px;line-height:1.45;color:var(--mut);flex:1">{{ band.desc }}</div>
+              <a href="{{ band.href }}" class="mblink" style="font-size:14px;color:var(--acc);font-weight:500;margin-top:4px;align-self:flex-start">Poslechnout ukázku →</a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-bottom:52px">
+        <div data-reveal class="reveal">
+          <div style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--mut2);margin-bottom:14px">Moderátoři</div>
+          <div style="border-top:1px solid var(--bd)">
+            <sc-for list="{{ moderators }}" as="m" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--bd)">
+                <span style="font-size:17px;color:var(--fg)">{{ m.name }}</span>
+                <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut2)">{{ m.note }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div data-reveal class="reveal" style="transition-delay:.1s">
+          <div style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--mut2);margin-bottom:14px">DJs</div>
+          <div style="border-top:1px solid var(--bd)">
+            <sc-for list="{{ djs }}" as="d" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--bd)">
+                <span style="font-size:17px;color:var(--fg)">{{ d.name }}</span>
+                <a href="{{ d.href }}" class="mblink" style="font-family:'Space Mono',monospace;font-size:12px;color:var(--acc)">ukázka →</a>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal class="reveal" style="background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:46px 48px;display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--acc);margin-bottom:16px">A teď to důležité</div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:32px;line-height:1.08;letter-spacing:-.6px;color:var(--fg);margin:0">Technický rider kapely <span class="mbserif" style="font-size:34px;color:var(--acc)">řešíme přímo s ní.</span></h3>
+        </div>
+        <div>
+          <p style="font-size:17px;line-height:1.6;color:var(--mut);margin:0 0 20px">Protože techniku vlastníme, domluvíme se s kapelou napřímo — vy neřešíte, kolik chce monitorů, jestli se to vejde na pódium ani kdo dodá zvuk. Přijdete si vybrat muziku, ne studovat technický list.</p>
+          <a href="#ozvuceni" class="mblink" style="color:var(--fg);font-size:15px">Jak ozvučujeme celý večer →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- #ozvuceni -->
+  <section id="ozvuceni" style="background:var(--bg);color:var(--fg);position:relative;overflow:hidden">
+    <div class="mbbgnum" data-speed="-0.4" style="position:absolute;left:-2%;bottom:-12%;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:240px;line-height:1;letter-spacing:-6px;color:rgba(236,233,225,.035);pointer-events:none;user-select:none">03</div>
+    <div style="max-width:1200px;margin:0 auto;padding:96px 40px;position:relative">
+      <div style="display:grid;grid-template-columns:1fr .9fr;gap:56px;align-items:center;margin-bottom:56px">
+        <div data-reveal class="reveal">
+          <div style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--acc);margin-bottom:18px">Fáze 03 · Ozvučení akcí · 3–6 měsíců</div>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:48px;line-height:1.02;letter-spacing:-1px;color:var(--fg);margin:0 0 20px">Vlastní aparát, vlastní technik. <span class="mbserif" style="font-size:52px;color:var(--acc)">Celý večer po ruce.</span></h2>
+          <p style="font-size:18px;line-height:1.55;color:var(--mut);margin:0">Ozvučíme cokoli, kde je potřeba, aby bylo slyšet — ples, firemní večírek, konferenci i vyhlášení. Techniku máme svoji, nepůjčujeme si ji na poslední chvíli, a náš technik zůstává na místě od stavby po poslední skladbu.</p>
+        </div>
+        <div data-reveal class="reveal" style="border-radius:12px;overflow:hidden;box-shadow:0 24px 60px -24px rgba(0,0,0,.7);aspect-ratio:1/1;background:#1a1c22;transition-delay:.1s">
+          <img class="mbpx" data-speed="0.12" src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1000&amp;q=80&amp;auto=format&amp;fit=crop" alt="Zvukový mixážní pult při akci" style="width:100%;height:114%;object-fit:cover;display:block">
+        </div>
+      </div>
+
+      <div style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--acc);margin-bottom:20px">Co ozvučíme</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--bd)">
+        <sc-for list="{{ sound }}" as="s" hint-placeholder-count="6">
+          <div data-reveal class="reveal" style="padding:22px 24px 24px 0;border-bottom:1px solid var(--bd)">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:20px;letter-spacing:-.3px;color:var(--fg);margin-bottom:7px">{{ s.title }}</div>
+            <div style="font-size:14.5px;line-height:1.5;color:var(--mut)">{{ s.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div data-reveal class="reveal" style="margin-top:40px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+        <a href="#poptavka" style="display:inline-flex;align-items:center;background:var(--acc);color:var(--ink);padding:15px 28px;border-radius:6px;font-weight:600;font-size:15px">Chci nacenit ozvučení</a>
+        <span style="font-size:15px;color:var(--mut)">Ples i firemní akce · po celé ČR</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- #cenik -->
+  <section id="cenik" style="background:var(--panel);border-top:1px solid var(--bd)">
+    <div style="max-width:1200px;margin:0 auto;padding:96px 40px">
+      <div data-reveal class="reveal" style="max-width:660px;margin-bottom:44px">
+        <div style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut2);margin-bottom:18px">Ceník</div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:44px;line-height:1.04;letter-spacing:-.9px;color:var(--fg);margin:0 0 12px">Tři balíčky, ať máte <span class="mbserif" style="font-size:48px;color:var(--acc)">představu.</span></h2>
+        <p style="font-size:17px;line-height:1.5;color:var(--mut);margin:0">Orientační ceny — finální nabídku ušijeme na váš sál, termín a program. Bez skrytých položek.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch">
+        <sc-for list="{{ plans }}" as="pl" hint-placeholder-count="3">
+          <div data-reveal class="reveal mbplan" style="position:relative;overflow:hidden;display:flex;flex-direction:column;background:{{ pl.bg }};border:1px solid {{ pl.bd }};border-radius:12px;padding:34px 32px 36px">
+            <span class="mbpsweep"></span>
+            <sc-if value="{{ pl.popular }}" hint-placeholder-val="{{ false }}">
+              <span class="mbp-badge" style="position:absolute;top:-12px;left:32px;background:var(--acc);color:var(--ink);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.8px;text-transform:uppercase;font-weight:700;padding:6px 12px;border-radius:6px;z-index:2">Oblíbené</span>
+            </sc-if>
+            <div class="mbp-tag" style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:{{ pl.tagcol }};margin-bottom:14px">{{ pl.tag }}</div>
+            <div class="mbp-fg" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:28px;letter-spacing:-.5px;color:{{ pl.fg }};margin-bottom:10px">{{ pl.name }}</div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:8px;flex-wrap:wrap"><span class="mbp-price" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:36px;letter-spacing:-1.2px;color:{{ pl.fg }};white-space:nowrap">{{ pl.price }}</span><span class="mbp-unit" style="font-size:14px;color:{{ pl.mut }};white-space:nowrap">{{ pl.unit }}</span></div>
+            <p class="mbp-mut" style="font-size:14.5px;line-height:1.5;color:{{ pl.mut }};margin:0 0 22px">{{ pl.desc }}</p>
+            <div class="mbp-div" style="display:flex;flex-direction:column;gap:11px;border-top:1px solid {{ pl.bd }};padding-top:20px;margin-bottom:26px;flex:1">
+              <sc-for list="{{ pl.features }}" as="f" hint-placeholder-count="4">
+                <div class="mbp-fg" style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;line-height:1.45;color:{{ pl.fg }}"><span class="mbp-check" style="color:var(--acc);font-weight:700;flex:0 0 auto">✓</span><span>{{ f }}</span></div>
+              </sc-for>
+            </div>
+            <a href="#poptavka" class="mbp-cta" style="display:inline-flex;align-items:center;justify-content:center;background:{{ pl.btnbg }};color:{{ pl.btnfg }};border:1px solid {{ pl.btnbd }};padding:14px 22px;border-radius:6px;font-weight:600;font-size:14.5px">{{ pl.cta }}</a>
+          </div>
+        </sc-for>
+      </div>
+      <p data-reveal class="reveal" style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.4px;color:var(--mut2);margin:24px 0 0">Ceny jsou orientační a bez DPH · doprava po Vysočině v ceně, jinam dle vzdálenosti.</p>
+    </div>
+  </section>
+
+  <!-- #galerie -->
+  <section id="galerie" style="max-width:1200px;margin:0 auto;padding:96px 40px">
+    <div data-reveal class="reveal" style="max-width:640px;margin-bottom:40px">
+      <div style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut2);margin-bottom:18px">Galerie</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:44px;line-height:1.04;letter-spacing:-.9px;color:var(--fg);margin:0 0 12px">Jak vypadá ples, <span class="mbserif" style="font-size:48px;color:var(--acc)">když klapne.</span></h2>
+      <p style="font-size:17px;line-height:1.5;color:var(--mut);margin:0">Momentky z plesů, které jsme rozjeli. Protáhni galerii do stran.</p>
+    </div>
+    <div data-reveal class="reveal" id="mbcircular" data-cur="Táhni · klikni" style="position:relative;height:560px;width:100%;overflow:hidden;background:transparent;cursor:grab"></div>
+    <div data-reveal class="reveal" style="margin-top:16px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--mut2)">Táhni do stran nebo scrolluj — galerie se otáčí</div>
+  </section>
+
+  <!-- #reference -->
+  <section id="reference" style="background:var(--panel);border-top:1px solid var(--bd)">
+    <div style="max-width:1200px;margin:0 auto;padding:96px 40px">
+      <div data-reveal class="reveal" style="max-width:640px;margin-bottom:44px">
+        <div style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut2);margin-bottom:18px">Reference</div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:44px;line-height:1.08;letter-spacing:-.9px;color:var(--fg);margin:0;text-wrap:balance">Co říkají maturitní výbory<br><span class="mbserif" style="font-size:48px;color:var(--acc)">po plese.</span></h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+          <div data-reveal class="reveal mbcard" style="position:relative;background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:34px 32px 28px;display:flex;flex-direction:column;gap:22px;overflow:hidden">
+            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--acc),transparent)"></div>
+            <div class="mbserif" style="font-size:88px;line-height:.5;color:var(--acc);height:44px;user-select:none">&ldquo;</div>
+            <p style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:20px;line-height:1.4;letter-spacing:-.3px;color:var(--fg);margin:0;flex:1;text-wrap:pretty">{{ r.quote }}</p>
+            <div style="display:flex;align-items:center;gap:13px;padding-top:20px;border-top:1px solid var(--bd)">
+              <div style="width:44px;height:44px;border-radius:999px;background:linear-gradient(145deg,rgba(230,150,58,.22),rgba(230,150,58,.06));border:1px solid rgba(230,150,58,.4);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:var(--acc);flex:0 0 auto">{{ r.initials }}</div>
+              <div>
+                <div style="font-weight:600;font-size:15px;color:var(--fg)">{{ r.name }}</div>
+                <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--mut2);margin-top:3px;letter-spacing:.3px">{{ r.meta }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- #poptavka -->
+  <section id="poptavka" style="background:var(--bg);border-top:1px solid var(--bd)">
+    <div style="max-width:1200px;margin:0 auto;padding:88px 40px">
+      <div style="display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start">
+        <div data-reveal class="reveal">
+          <div style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut2);margin-bottom:18px">Nezávazná poptávka</div>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:42px;line-height:1.04;letter-spacing:-.9px;color:var(--fg);margin:0 0 20px">Napište nám, kde jste. <span class="mbserif" style="font-size:46px;color:var(--acc)">Zbytek vyřešíme.</span></h2>
+          <p style="font-size:17px;line-height:1.55;color:var(--mut);margin:0 0 28px">Ať už řešíte kapelu, sál, nebo ozvučení — ozveme se do dvou pracovních dnů s konkrétním návrhem. Bez závazku a bez tlaku.</p>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <a href="tel:+420775258844" class="mblink" style="display:inline-flex;align-items:center;gap:12px;color:var(--fg);font-size:17px;align-self:flex-start"><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut2);width:64px">TEL</span>+420 775 25 88 44</a>
+            <a href="mailto:info@mbservisproduction.cz" class="mblink" style="display:inline-flex;align-items:center;gap:12px;color:var(--fg);font-size:17px;align-self:flex-start"><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut2);width:64px">E-MAIL</span>info@mbservisproduction.cz</a>
+          </div>
+        </div>
+
+        <div data-reveal class="reveal" style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:36px 40px;transition-delay:.1s">
+          <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:40px 0;text-align:center">
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:28px;letter-spacing:-.4px;color:var(--fg);margin-bottom:10px">Díky, máme to!</div>
+              <p style="font-size:16px;line-height:1.5;color:var(--mut);margin:0">Ozveme se vám do dvou pracovních dnů na uvedený kontakt.</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+            <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:18px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+                <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;font-weight:500;color:var(--fg)">Jméno</span><input required placeholder="Jan Novák" style="background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:12px 14px;font-size:15px;font-family:inherit;color:var(--fg)"></label>
+                <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;font-weight:500;color:var(--fg)">Škola / třída</span><input placeholder="Gymnázium, 4.B" style="background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:12px 14px;font-size:15px;font-family:inherit;color:var(--fg)"></label>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+                <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;font-weight:500;color:var(--fg)">Telefon</span><input required placeholder="+420" style="background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:12px 14px;font-size:15px;font-family:inherit;color:var(--fg)"></label>
+                <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;font-weight:500;color:var(--fg)">E-mail</span><input required type="email" placeholder="vy@email.cz" style="background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:12px 14px;font-size:15px;font-family:inherit;color:var(--fg)"></label>
+              </div>
+              <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;font-weight:500;color:var(--fg)">S čím pomůžeme?</span><textarea rows="4" placeholder="Termín plesu, sál, jestli chcete kapelu, DJ nebo jen ozvučení…" style="background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:12px 14px;font-size:15px;font-family:inherit;color:var(--fg);resize:vertical"></textarea></label>
+              <button type="submit" style="align-self:flex-start;background:var(--acc);color:var(--ink);border:none;padding:15px 30px;border-radius:6px;font-weight:600;font-size:15px;font-family:inherit;cursor:pointer">Odeslat poptávku</button>
+            </form>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--bg);color:var(--fg);border-top:1px solid var(--bd)">
+    <div style="max-width:1200px;margin:0 auto;padding:56px 40px;display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <div style="max-width:340px">
+        <img src="assets/logo-white.svg" alt="MB servis production" style="height:32px;display:block;margin-bottom:16px">
+        <p style="font-size:14.5px;line-height:1.5;color:var(--mut);margin:0">Kapela, sál i technika na maturitní ples a firemní akce. Sídlíme na Vysočině, jezdíme po celé ČR.</p>
+      </div>
+      <div style="display:flex;gap:56px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--mut2);margin-bottom:4px">Sekce</div>
+          <a href="#kapela" class="mblink" style="color:var(--mut);font-size:14.5px;align-self:flex-start">Kapela &amp; DJ</a>
+          <a href="#sal" class="mblink" style="color:var(--mut);font-size:14.5px;align-self:flex-start">Sál</a>
+          <a href="#ozvuceni" class="mblink" style="color:var(--mut);font-size:14.5px;align-self:flex-start">Ozvučení</a>
+          <a href="#reference" class="mblink" style="color:var(--mut);font-size:14.5px;align-self:flex-start">Reference</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--mut2);margin-bottom:4px">Kontakt</div>
+          <a href="tel:+420775258844" class="mblink" style="color:var(--mut);font-size:14.5px;align-self:flex-start">+420 775 25 88 44</a>
+          <a href="mailto:info@mbservisproduction.cz" class="mblink" style="color:var(--mut);font-size:14.5px;align-self:flex-start">info@mbservisproduction.cz</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--bd)"><div style="max-width:1200px;margin:0 auto;padding:20px 40px;font-family:'Space Mono',monospace;font-size:11.5px;color:var(--mut2)">© 2026 MB servis production</div></div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { sent: false };
+
+  componentDidMount() {
+    this._setup();
+    requestAnimationFrame(() => this._setup());
+  }
+
+  _setup() {
+    const root = document.getElementById('mbroot');
+    if (!root) { setTimeout(() => this._setup(), 120); return; }
+    if (this._done) return;
+    this._done = true;
+
+    root.classList.add('mb-anim');
+
+    // page-load wipe
+    const wipe = document.getElementById('mbwipe');
+    if (wipe) { setTimeout(() => wipe.classList.add('up'), 350); setTimeout(() => { wipe.style.display = 'none'; }, 1350); }
+
+    // shrinking nav
+    const head = document.getElementById('mbhead');
+    this._onNavScroll = () => { if (head) head.classList.toggle('shrink', window.scrollY > 60); };
+    window.addEventListener('scroll', this._onNavScroll, { passive: true });
+    this._onNavScroll();
+
+    // parallax (self-contained, no external deps)
+    this._parallax();
+
+    this._fallback = setTimeout(() => {
+      root.querySelectorAll('[data-reveal]').forEach((n) => n.classList.add('in'));
+      root.querySelectorAll('[data-count]').forEach((n) => this._count(n));
+    }, 2500);
+
+    this._hero();
+    this._cursor();
+    this._gallery();
+    this._heroImgs();
+    if (window.OGL) this._circular();
+    else window.addEventListener('ogl-ready', () => this._circular(), { once: true });
+
+    const hero = document.getElementById('top');
+    const rev = document.getElementById('mbreveal');
+    if (hero && rev) {
+      hero.addEventListener('mousemove', (e) => {
+        const r = hero.getBoundingClientRect();
+        rev.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        rev.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+      hero.addEventListener('mouseleave', () => {
+        rev.style.setProperty('--mx', '-400px');
+        rev.style.setProperty('--my', '-400px');
+      });
+    }
+
+    this._phases();
+
+    if (this._io) this._io.disconnect();
+    this._io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('in'); this._io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    root.querySelectorAll('[data-reveal]').forEach((n) => this._io.observe(n));
+
+    if (this._cio) this._cio.disconnect();
+    this._cio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { this._count(e.target); this._cio.unobserve(e.target); }
+      });
+    }, { threshold: 0.6 });
+    root.querySelectorAll('[data-count]').forEach((n) => this._cio.observe(n));
+  }
+
+  _phases() {
+    const outer = document.getElementById('mbpinouter');
+    const pin = document.getElementById('mbpin');
+    const track = document.getElementById('mbtrack');
+    if (!outer || !pin || !track) return;
+
+    const measure = () => {
+      track.style.transform = 'translateX(0)';
+      this._travel = Math.max(0, track.scrollWidth - pin.clientWidth);
+      outer.style.height = (pin.offsetHeight + this._travel) + 'px';
+    };
+    const onScroll = () => {
+      const travel = this._travel || 0;
+      const top = outer.getBoundingClientRect().top;
+      const scrolled = Math.min(Math.max(70 - top, 0), travel);
+      track.style.transform = `translateX(${-scrolled}px)`;
+    };
+
+    measure(); onScroll();
+    setTimeout(() => { measure(); onScroll(); }, 400);
+
+    this._onPhaseResize = () => { measure(); onScroll(); };
+    this._onPhaseScroll = onScroll;
+    window.addEventListener('resize', this._onPhaseResize);
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  _heroImgs() {
+    const hero = document.getElementById('top');
+    if (!hero) return;
+    const els = Array.prototype.slice.call(hero.querySelectorAll('.mbpar'));
+    if (!els.length) return;
+    els.forEach((el) => { if (el.parentElement) el.parentElement.style.perspective = '1200px'; el.style.transformStyle = 'preserve-3d'; });
+    let mx = 0, my = 0, cmx = 0, cmy = 0, t = 0;
+    hero.addEventListener('mousemove', (e) => {
+      const r = hero.getBoundingClientRect();
+      mx = (e.clientX - r.left) / r.width - 0.5;
+      my = (e.clientY - r.top) / r.height - 0.5;
+    });
+    hero.addEventListener('mouseleave', () => { mx = 0; my = 0; });
+    const loop = () => {
+      t += 0.02;
+      cmx += (mx - cmx) * 0.08; cmy += (my - cmy) * 0.08;
+      els.forEach((el, i) => {
+        const d = parseFloat(el.dataset.depth) || 1;
+        const fy = Math.sin(t + i * 1.7) * 6;
+        const px = cmx * d * 20;
+        const py = cmy * d * 20 + fy;
+        const ry = cmx * d * 9;
+        const rx = -cmy * d * 9;
+        el.style.transform = `translate3d(${px}px, ${py}px, 0) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      this._hraf = requestAnimationFrame(loop);
+    };
+    loop();
+  }
+
+  _circular() {
+    const el = document.getElementById('mbcircular');
+    if (!el || !window.OGL || this._capp) return;
+    const O = window.OGL;
+    const mk = (id, text) => ({ image: `https://images.unsplash.com/photo-${id}?w=900&q=80&auto=format&fit=crop`, full: `https://images.unsplash.com/photo-${id}?w=2000&q=90&auto=format&fit=crop`, text });
+    const items = [
+      mk("1470229722913-7c0e2dbbafd3", "Parket v jednom kole"),
+      mk("1533174072545-7a4b6ad7a6c3", "Kapela naživo"),
+      mk("1516450360452-9312f5e86fc7", "Světla a dav"),
+      mk("1492684223066-81342ee5ff30", "Afterparty"),
+      mk("1524368535928-5b5e00ddc76b", "Rocková show"),
+      mk("1514525253161-7a46d19cd819", "Ruce nahoře")
+    ];
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    const makeText = (gl, text, font, color) => {
+      const cv = document.createElement('canvas');
+      const ctx = cv.getContext('2d');
+      ctx.font = font;
+      const w = Math.ceil(ctx.measureText(text).width);
+      const h = Math.ceil(parseInt(font, 10) * 1.2);
+      cv.width = w + 24; cv.height = h + 24;
+      ctx.font = font; ctx.fillStyle = color; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.fillText(text, cv.width / 2, cv.height / 2);
+      const tex = new O.Texture(gl, { generateMipmaps: false });
+      tex.image = cv;
+      return { texture: tex, width: cv.width, height: cv.height };
+    };
+
+    const self = this;
+    class Media {
+      constructor(o) { Object.assign(this, o); this.extra = 0; this.mkShader(); this.mkMesh(); this.mkTitle(); this.onResize(); }
+      mkShader() {
+        const gl = this.gl;
+        const texture = new O.Texture(gl, { generateMipmaps: true });
+        this.program = new O.Program(gl, {
+          depthTest: false, depthWrite: false, transparent: true,
+          vertex: `precision highp float;attribute vec3 position;attribute vec2 uv;uniform mat4 modelViewMatrix;uniform mat4 projectionMatrix;uniform float uTime;uniform float uSpeed;varying vec2 vUv;void main(){vUv=uv;vec3 p=position;p.z=(sin(p.x*4.0+uTime)*1.5+cos(p.y*2.0+uTime)*1.5)*(0.1+uSpeed*0.5);gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);}`,
+          fragment: `precision highp float;uniform vec2 uImageSizes;uniform vec2 uPlaneSizes;uniform sampler2D tMap;uniform float uBorderRadius;varying vec2 vUv;float rb(vec2 p,vec2 b,float r){vec2 d=abs(p)-b;return length(max(d,vec2(0.0)))+min(max(d.x,d.y),0.0)-r;}void main(){vec2 ratio=vec2(min((uPlaneSizes.x/uPlaneSizes.y)/(uImageSizes.x/uImageSizes.y),1.0),min((uPlaneSizes.y/uPlaneSizes.x)/(uImageSizes.y/uImageSizes.x),1.0));vec2 uv=vec2(vUv.x*ratio.x+(1.0-ratio.x)*0.5,vUv.y*ratio.y+(1.0-ratio.y)*0.5);vec4 color=texture2D(tMap,uv);float d=rb(vUv-0.5,vec2(0.5-uBorderRadius),uBorderRadius);float e=0.002;float a=1.0-smoothstep(-e,e,d);gl_FragColor=vec4(color.rgb,a);}`,
+          uniforms: { tMap: { value: texture }, uPlaneSizes: { value: [0, 0] }, uImageSizes: { value: [0, 0] }, uSpeed: { value: 0 }, uTime: { value: 100 * Math.random() }, uBorderRadius: { value: this.borderRadius } }
+        });
+        const img = new Image(); img.crossOrigin = 'anonymous'; img.src = this.image;
+        img.onload = () => { texture.image = img; this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight]; };
+      }
+      mkMesh() { this.plane = new O.Mesh(this.gl, { geometry: this.geometry, program: this.program }); this.plane.setParent(this.scene); }
+      mkTitle() {
+        const { texture, width, height } = makeText(this.gl, this.text, this.font, this.textColor);
+        const geometry = new O.Plane(this.gl);
+        const program = new O.Program(this.gl, {
+          transparent: true,
+          vertex: `attribute vec3 position;attribute vec2 uv;uniform mat4 modelViewMatrix;uniform mat4 projectionMatrix;varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+          fragment: `precision highp float;uniform sampler2D tMap;varying vec2 vUv;void main(){vec4 c=texture2D(tMap,vUv);if(c.a<0.1)discard;gl_FragColor=c;}`,
+          uniforms: { tMap: { value: texture } }
+        });
+        const mesh = new O.Mesh(this.gl, { geometry, program });
+        const aspect = width / height;
+        const th = this.plane.scale.y * 0.14;
+        mesh.scale.set(th * aspect, th, 1);
+        mesh.position.y = -this.plane.scale.y * 0.5 - th * 0.5 - 0.06;
+        mesh.setParent(this.plane);
+      }
+      update(scroll, dir) {
+        this.plane.position.x = this.x - scroll.current - this.extra;
+        const x = this.plane.position.x, H = this.viewport.width / 2;
+        if (this.bend === 0) { this.plane.position.y = 0; this.plane.rotation.z = 0; }
+        else {
+          const B = Math.abs(this.bend), R = (H * H + B * B) / (2 * B), ex = Math.min(Math.abs(x), H), arc = R - Math.sqrt(R * R - ex * ex);
+          if (this.bend > 0) { this.plane.position.y = -arc; this.plane.rotation.z = -Math.sign(x) * Math.asin(ex / R); }
+          else { this.plane.position.y = arc; this.plane.rotation.z = Math.sign(x) * Math.asin(ex / R); }
+        }
+        this.speed = scroll.current - scroll.last;
+        this.program.uniforms.uTime.value += 0.04;
+        this.program.uniforms.uSpeed.value = this.speed;
+        const po = this.plane.scale.x / 2, vo = this.viewport.width / 2;
+        const before = this.plane.position.x + po < -vo, after = this.plane.position.x - po > vo;
+        if (dir === 'right' && before) this.extra -= this.widthTotal;
+        if (dir === 'left' && after) this.extra += this.widthTotal;
+      }
+      onResize(o) {
+        o = o || {};
+        if (o.screen) this.screen = o.screen;
+        if (o.viewport) this.viewport = o.viewport;
+        this.scale = this.screen.height / 1500;
+        this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
+        this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
+        this.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
+        this.padding = 2;
+        this.width = this.plane.scale.x + this.padding;
+        this.widthTotal = this.width * this.length;
+        this.x = this.width * this.index;
+      }
+    }
+
+    class App {
+      constructor(container, opt) {
+        this.container = container;
+        this.scrollSpeed = opt.scrollSpeed;
+        this.scroll = { ease: opt.scrollEase, current: 0, target: 0, last: 0, position: 0 };
+        this.isDown = false; this.start = 0;
+        this.mkRenderer(); this.mkCamera(); this.scene = new O.Transform(); this.onResize();
+        this.geo = new O.Plane(this.gl, { heightSegments: 50, widthSegments: 100 });
+        this.mkMedias(opt); this.update(); this.addEv();
+      }
+      mkRenderer() { this.renderer = new O.Renderer({ alpha: true, antialias: true, dpr: Math.min(window.devicePixelRatio || 1, 2) }); this.gl = this.renderer.gl; this.gl.clearColor(0, 0, 0, 0); this.container.appendChild(this.gl.canvas); this.gl.canvas.style.width = '100%'; this.gl.canvas.style.height = '100%'; }
+      mkCamera() { this.camera = new O.Camera(this.gl); this.camera.fov = 45; this.camera.position.z = 20; }
+      mkMedias(opt) {
+        const dup = [...opt.items, ...opt.items];
+        this.medias = dup.map((d, i) => new Media({ geometry: this.geo, gl: this.gl, image: d.image, full: d.full, index: i, length: dup.length, scene: this.scene, screen: this.screen, text: d.text, viewport: this.viewport, bend: opt.bend, textColor: opt.textColor, borderRadius: opt.borderRadius, font: opt.font }));
+      }
+      onResize() {
+        this.screen = { width: this.container.clientWidth, height: this.container.clientHeight };
+        this.renderer.setSize(this.screen.width, this.screen.height);
+        this.camera.perspective({ aspect: this.screen.width / this.screen.height });
+        const fov = (this.camera.fov * Math.PI) / 180, h = 2 * Math.tan(fov / 2) * this.camera.position.z, w = h * this.camera.aspect;
+        this.viewport = { width: w, height: h };
+        if (this.medias) this.medias.forEach((m) => m.onResize({ screen: this.screen, viewport: this.viewport }));
+      }
+      down(e) { this.isDown = true; this.dragged = false; this.scroll.position = this.scroll.current; this.start = ('touches' in e) ? e.touches[0].clientX : e.clientX; }
+      move(e) { if (!this.isDown) return; const x = ('touches' in e) ? e.touches[0].clientX : e.clientX; if (Math.abs(x - this.start) > 6) this.dragged = true; this.scroll.target = this.scroll.position + (this.start - x) * (this.scrollSpeed * 0.025); }
+      up(e) {
+        if (this.isDown && !this.dragged && this.onTap) {
+          let best = null, bd = Infinity;
+          this.medias.forEach((m) => { const d = Math.abs(m.plane.position.x); if (d < bd) { bd = d; best = m; } });
+          if (best) this.onTap(best);
+        }
+        this.isDown = false;
+      }
+      wheel(e) { const d = e.deltaY || e.wheelDelta || e.detail; this.scroll.target += (d > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2; }
+      update() {
+        this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
+        const dir = this.scroll.current > this.scroll.last ? 'right' : 'left';
+        if (this.medias) this.medias.forEach((m) => m.update(this.scroll, dir));
+        this.renderer.render({ scene: this.scene, camera: this.camera });
+        this.scroll.last = this.scroll.current;
+        this.raf = requestAnimationFrame(() => this.update());
+      }
+      addEv() {
+        this._r = () => this.onResize(); this._w = (e) => this.wheel(e);
+        this._d = (e) => this.down(e); this._m = (e) => this.move(e); this._u = () => this.up();
+        window.addEventListener('resize', this._r);
+        this.container.addEventListener('wheel', this._w, { passive: true });
+        this.container.addEventListener('mousedown', this._d);
+        window.addEventListener('mousemove', this._m);
+        window.addEventListener('mouseup', this._u);
+        this.container.addEventListener('touchstart', this._d, { passive: true });
+        window.addEventListener('touchmove', this._m, { passive: true });
+        window.addEventListener('touchend', this._u);
+      }
+      destroy() {
+        cancelAnimationFrame(this.raf);
+        window.removeEventListener('resize', this._r);
+        this.container.removeEventListener('wheel', this._w);
+        this.container.removeEventListener('mousedown', this._d);
+        window.removeEventListener('mousemove', this._m);
+        window.removeEventListener('mouseup', this._u);
+        this.container.removeEventListener('touchstart', this._d);
+        window.removeEventListener('touchmove', this._m);
+        window.removeEventListener('touchend', this._u);
+        if (this.gl && this.gl.canvas && this.gl.canvas.parentNode) this.gl.canvas.parentNode.removeChild(this.gl.canvas);
+      }
+    }
+
+    try {
+      this._capp = new App(el, { items, bend: 3, textColor: '#ece9e1', borderRadius: 0.06, font: "700 30px 'Space Grotesk', sans-serif", scrollSpeed: 2, scrollEase: 0.05 });
+      // Tap a photo → open fullscreen
+      const lb = document.getElementById('mblb');
+      const limg = document.getElementById('mblbimg');
+      const lcap = document.getElementById('mblbcap');
+      const lpos = document.getElementById('mblbpos');
+      const prev = document.getElementById('mblbprev');
+      const next = document.getElementById('mblbnext');
+      if (prev) prev.style.display = 'none';
+      if (next) next.style.display = 'none';
+      const closeLb = () => { lb.style.display = 'none'; document.body.style.overflow = ''; };
+      this._capp.onTap = (media) => {
+        limg.src = media.full || media.image;
+        limg.alt = media.text || '';
+        if (lcap) lcap.textContent = media.text || '';
+        if (lpos) lpos.textContent = '';
+        lb.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      };
+      document.getElementById('mblbclose').addEventListener('click', closeLb);
+      lb.addEventListener('click', (e) => { if (e.target === lb) closeLb(); });
+      limg.addEventListener('click', (e) => e.stopPropagation());
+      this._onLbKey = (e) => { if (lb.style.display !== 'none' && e.key === 'Escape') closeLb(); };
+      document.addEventListener('keydown', this._onLbKey);
+    } catch (err) { console.warn('circular gallery failed', err); }
+  }
+
+  _gallery() {
+    const lb = document.getElementById('mblb');
+    if (!lb) return;
+    const img = document.getElementById('mblbimg');
+    const cap = document.getElementById('mblbcap');
+    const pos = document.getElementById('mblbpos');
+    const items = Array.prototype.slice.call(document.querySelectorAll('.mbgitem'));
+    if (!items.length) return;
+    let idx = -1;
+    const show = (i) => {
+      idx = (i + items.length) % items.length;
+      const el = items[idx];
+      img.src = el.getAttribute('data-full');
+      img.alt = el.getAttribute('data-text') || '';
+      cap.textContent = el.getAttribute('data-text') || '';
+      pos.textContent = (idx + 1) + ' / ' + items.length;
+    };
+    const open = (i) => { show(i); lb.style.display = 'flex'; document.body.style.overflow = 'hidden'; };
+    const close = () => { lb.style.display = 'none'; document.body.style.overflow = ''; idx = -1; };
+    this._lbClose = close;
+    items.forEach((el, i) => el.addEventListener('click', () => open(i)));
+    document.getElementById('mblbclose').addEventListener('click', close);
+    document.getElementById('mblbprev').addEventListener('click', (e) => { e.stopPropagation(); show(idx - 1); });
+    document.getElementById('mblbnext').addEventListener('click', (e) => { e.stopPropagation(); show(idx + 1); });
+    lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+    img.addEventListener('click', (e) => e.stopPropagation());
+    this._onKey = (e) => {
+      if (lb.style.display === 'none') return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') show(idx + 1);
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+    };
+    document.addEventListener('keydown', this._onKey);
+  }
+
+  _reveal2() {
+    document.querySelectorAll('#mbroot h1, #mbroot h2').forEach((h) => {
+      if (!h.dataset.split) { h.dataset.split = '1'; this._splitWords(h); }
+      h.classList.add('mbsplit');
+      const words = h.querySelectorAll('.mbword');
+      words.forEach((w, i) => { w.style.transitionDelay = (i * 0.05) + 's'; });
+    });
+    if (this._rio) this._rio.disconnect();
+    this._rio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); this._rio.unobserve(e.target); } });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('#mbroot .mbsplit').forEach((h) => this._rio.observe(h));
+    // reveal anything already above the fold immediately
+    requestAnimationFrame(() => {
+      document.querySelectorAll('#mbroot .mbsplit').forEach((h) => {
+        if (h.getBoundingClientRect().top < window.innerHeight * 0.92) h.classList.add('in');
+      });
+    });
+  }
+
+  _parallax() {
+    const nums = Array.prototype.slice.call(document.querySelectorAll('.mbbgnum'));
+    const imgs = Array.prototype.slice.call(document.querySelectorAll('.mbpx'));
+    if (!nums.length && !imgs.length) return;
+    const vh = () => window.innerHeight;
+    const tick = () => {
+      const h = vh();
+      nums.forEach((el) => {
+        const sp = parseFloat(el.dataset.speed) || 0.4;
+        const r = el.getBoundingClientRect();
+        const prog = (r.top + r.height / 2 - h / 2) / h; // -1..1 around center
+        el.style.transform = `translateY(${(-prog * sp * 90).toFixed(1)}px)`;
+      });
+      imgs.forEach((el) => {
+        const sp = parseFloat(el.dataset.speed) || 0.12;
+        const r = el.getBoundingClientRect();
+        const prog = (r.top + r.height / 2 - h / 2) / h;
+        el.style.transform = `translateY(${(-prog * sp * 120).toFixed(1)}px)`;
+      });
+      this._pxraf = requestAnimationFrame(tick);
+    };
+    tick();
+  }
+
+  _splitWords(el) {
+    const kids = Array.prototype.slice.call(el.childNodes);
+    el.innerHTML = '';
+    kids.forEach((node) => {
+      if (node.nodeType === 3) {
+        node.textContent.split(/(\s+)/).forEach((p) => {
+          if (p === '' ) return;
+          if (p.trim() === '') { el.appendChild(document.createTextNode(p)); }
+          else { const s = document.createElement('span'); s.className = 'mbword'; s.textContent = p; el.appendChild(s); }
+        });
+      } else if (node.nodeName === 'BR') {
+        el.appendChild(node);
+      } else {
+        node.classList.add('mbword');
+        el.appendChild(node);
+      }
+    });
+  }
+
+  _cursor() {
+    const cur = document.getElementById('mbcursor');
+    const lab = document.getElementById('mbcurlabel');
+    if (!cur) return;
+    let tx = window.innerWidth / 2, ty = window.innerHeight / 2, cx = tx, cy = ty;
+    this._onMove = (e) => { tx = e.clientX; ty = e.clientY; };
+    this._onOver = (e) => {
+      const it = e.target.closest && e.target.closest('a,button,input,textarea,label,[role="button"]');
+      cur.classList.toggle('big', !!it);
+      if (lab) {
+        const ctxEl = e.target.closest && e.target.closest('[data-cur]');
+        if (ctxEl) { lab.textContent = ctxEl.getAttribute('data-cur'); lab.classList.add('on'); }
+        else lab.classList.remove('on');
+      }
+    };
+    document.addEventListener('mousemove', this._onMove, { passive: true });
+    document.addEventListener('mouseover', this._onOver, { passive: true });
+    const loop = () => {
+      cx += (tx - cx) * 0.2; cy += (ty - cy) * 0.2;
+      cur.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+      if (lab) { lab.style.left = cx + 'px'; lab.style.top = cy + 'px'; }
+      this._craf = requestAnimationFrame(loop);
+    };
+    loop();
+  }
+
+  _hero() {
+    const c = document.getElementById('mbwave');
+    if (!c) return;
+    if (this._raf) cancelAnimationFrame(this._raf);
+    const ctx = c.getContext('2d');
+    let w = 0, h = 0, dpr = 1;
+    const resize = () => {
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      w = c.clientWidth; h = c.clientHeight;
+      c.width = Math.max(1, w * dpr); c.height = Math.max(1, h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    if (this._onResize) window.removeEventListener('resize', this._onResize);
+    this._onResize = resize;
+    window.addEventListener('resize', resize);
+
+    const N = 46;
+    const pts = [];
+    for (let i = 0; i < N; i++) {
+      pts.push({ x: Math.random(), y: Math.random(), vx: (Math.random() - 0.5) * 0.0006, vy: (Math.random() - 0.5) * 0.0006 });
+    }
+
+    let t = 0;
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+      for (const p of pts) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > 1) p.vx *= -1;
+        if (p.y < 0 || p.y > 1) p.vy *= -1;
+      }
+      for (let i = 0; i < N; i++) {
+        for (let j = i + 1; j < N; j++) {
+          const dx = (pts[i].x - pts[j].x) * w;
+          const dy = (pts[i].y - pts[j].y) * h;
+          const d = Math.hypot(dx, dy);
+          if (d < 130) {
+            ctx.strokeStyle = `rgba(230,150,58,${0.07 * (1 - d / 130)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x * w, pts[i].y * h);
+            ctx.lineTo(pts[j].x * w, pts[j].y * h);
+            ctx.stroke();
+          }
+        }
+      }
+      for (const p of pts) {
+        ctx.fillStyle = 'rgba(236,233,225,0.22)';
+        ctx.beginPath();
+        ctx.arc(p.x * w, p.y * h, 1.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      t++;
+      this._raf = requestAnimationFrame(draw);
+    };
+    draw();
+  }
+
+  componentWillUnmount() {
+    if (this._raf) cancelAnimationFrame(this._raf);
+    if (this._craf) cancelAnimationFrame(this._craf);
+    if (this._hraf) cancelAnimationFrame(this._hraf);
+    if (this._capp) this._capp.destroy();
+    if (this._onMove) document.removeEventListener('mousemove', this._onMove);
+    if (this._onOver) document.removeEventListener('mouseover', this._onOver);
+    if (this._onResize) window.removeEventListener('resize', this._onResize);
+    if (this._onPhaseResize) window.removeEventListener('resize', this._onPhaseResize);
+    if (this._onPhaseScroll) window.removeEventListener('scroll', this._onPhaseScroll);
+    if (this._io) this._io.disconnect();
+    if (this._cio) this._cio.disconnect();
+    if (this._fallback) clearTimeout(this._fallback);
+    if (this._onKey) document.removeEventListener('keydown', this._onKey);
+    if (this._onLbKey) document.removeEventListener('keydown', this._onLbKey);
+    if (this._onNavScroll) window.removeEventListener('scroll', this._onNavScroll);
+    if (this._rio) this._rio.disconnect();
+    if (this._pxraf) cancelAnimationFrame(this._pxraf);
+    document.body.style.overflow = '';
+  }
+
+  _count(el) {
+    const target = parseFloat(el.getAttribute('data-count')) || 0;
+    const suffix = el.getAttribute('data-suffix') || '';
+    const dur = 1300;
+    const t0 = performance.now();
+    const tick = (now) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const val = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      el.textContent = val + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  renderVals() {
+    const img = (id) => `https://images.unsplash.com/photo-${id}?w=800&q=80&auto=format&fit=crop`;
+    return {
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      onSubmit: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+      marqHalves: [0, 1],
+      marqItems: ["Kapela", "Sál", "Ozvučení", "Moderátoři", "DJs", "Technik na místě", "Po celé ČR", "Kapela", "Sál", "Ozvučení", "Moderátoři", "DJs", "Technik na místě", "Po celé ČR"],
+      plans: [
+        { name: "Ozvučení", tag: "Základ", popular: false, price: "od 9 900", unit: "Kč / večer", desc: "Když máte kapelu i sál a potřebujete jen spolehlivý zvuk.", cta: "Poptat ozvučení",
+          bg: "var(--card)", bd: "var(--bd)", fg: "var(--fg)", mut: "var(--mut)", tagcol: "var(--mut2)", btnbg: "transparent", btnfg: "var(--fg)", btnbd: "var(--bd)",
+          features: ["Vlastní aparatura a mikrofony", "Technik na místě celý večer", "Ozvučení proslovů i nástupu", "Diskotéka po kapele"] },
+        { name: "Ples komplet", tag: "Nejčastější volba", popular: true, price: "od 24 900", unit: "Kč / večer", desc: "Kapela nebo DJ, ozvučení i světla — celý večer z jedné ruky.", cta: "Chci celý balíček",
+          bg: "var(--bg)", bd: "var(--acc)", fg: "var(--fg)", mut: "var(--mut)", tagcol: "var(--acc)", btnbg: "var(--acc)", btnfg: "var(--ink)", btnbd: "var(--acc)",
+          features: ["Kapela nebo DJ dle výběru", "Kompletní zvuk + monitoring", "Pódiové a taneční osvětlení", "Moderátor / technik na místě", "Rider řešíme přímo s kapelou"] },
+        { name: "Na klíč", tag: "Vše kolem plesu", popular: false, price: "na míru", unit: "", desc: "Kapela, DJ, moderátor, světla i pomoc s výběrem sálu.", cta: "Domluvit schůzku",
+          bg: "var(--card)", bd: "var(--bd)", fg: "var(--fg)", mut: "var(--mut)", tagcol: "var(--mut2)", btnbg: "transparent", btnfg: "var(--fg)", btnbd: "var(--bd)",
+          features: ["Vše z balíčku Ples komplet", "Kapela + DJ + moderátor", "Poradenství s výběrem sálu", "Plán a časování celého večera", "Jeden kontakt na všechno"] }
+      ],
+      gallery: [
+        { img: img("1470229722913-7c0e2dbbafd3"), full: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1700&q=85&auto=format&fit=crop", text: "Parket v jednom kole" },
+        { img: img("1533174072545-7a4b6ad7a6c3"), full: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1700&q=85&auto=format&fit=crop", text: "Kapela naživo" },
+        { img: img("1516450360452-9312f5e86fc7"), full: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1700&q=85&auto=format&fit=crop", text: "Světla a dav" },
+        { img: img("1492684223066-81342ee5ff30"), full: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1700&q=85&auto=format&fit=crop", text: "Afterparty" },
+        { img: img("1524368535928-5b5e00ddc76b"), full: "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=1700&q=85&auto=format&fit=crop", text: "Rocková show" },
+        { img: img("1514525253161-7a46d19cd819"), full: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1700&q=85&auto=format&fit=crop", text: "Ruce nahoře" }
+      ],
+      phases: [
+        { num: "01", when: "12–18 MĚS. PŘED", title: "Sál", href: "#sal", img: img("1519167758481-83f550bb49b3"), desc: "Rezervuje se první a nejdřív dojde. Sály nepronajímáme, ale poradíme, co ověřit, než podepíšete — akustiku, pódium, přístup i zásuvky." },
+        { num: "02", when: "6–9 MĚS. PŘED", title: "Kapela & DJ", href: "#kapela", img: img("1470229722913-7c0e2dbbafd3"), desc: "Vyberete zvuk večera. Máme prověřené kapely, moderátory i DJs — a techniku k nim řešíme přímo s kapelou." },
+        { num: "03", when: "3–6 MĚS. PŘED", title: "Ozvučení", href: "#ozvuceni", img: img("1598488035139-bdbb2231ce04"), desc: "Ladíme technický plán večera. Vlastní aparát, vlastní technici a technik na místě od stavby po poslední skladbu." }
+      ],
+      stats: [
+        { num: 15, suffix: "+", label: "let na plesech i firemních akcích" },
+        { num: 300, suffix: "+", label: "ozvučených večerů po celé ČR" },
+        { num: 4, suffix: "", label: "prověřené kapely v nabídce" },
+        { num: 1, suffix: "", label: "technik u vás celý večer" }
+      ],
+      salChecks: [
+        { n: "01", title: "Akustika", desc: "Holé betonové stěny a sklo = ozvěna a kaše místo hudby. Zkuste v sále tlesknout." },
+        { n: "02", title: "Prostor pro pódium", desc: "Kapela potřebuje šířku i hloubku. Změřte to — ne odhadněte." },
+        { n: "03", title: "Přístup pro vykládku", desc: "Aparát se nese v bednách. Schody bez výtahu prodlouží stavbu o hodiny." },
+        { n: "04", title: "Zásuvky na světla a zvuk", desc: "Kolik samostatných okruhů? Jeden přetížený jistič vypne celý večer." },
+        { n: "05", title: "Kapacita ≠ vstupenky", desc: "Počet míst k sezení není počet lidí, které pustíte dovnitř. Ověřte oboje." },
+        { n: "06", title: "„Ozvučení v ceně“", desc: "Občas to znamená dva repráky ze 70. let. Zeptejte se, co přesně je součástí." }
+      ],
+      bands: [
+        { name: "Blueband", tag: "TANEČNÍ", desc: "Taneční klasika i současné hity. Sázka na jistotu, když má tančit celý sál.", img: img("1501386761578-eac5c94b800a"), href: "#" },
+        { name: "Klaret", tag: "UNIVERZÁL", desc: "Živá kapela s širokým repertoárem od svingu po pop. Univerzál na každý ples.", img: img("1533174072545-7a4b6ad7a6c3"), href: "#" },
+        { name: "Lazareth", tag: "ROCK", desc: "Energická rocková show. Pro třídy, které chtějí ples spíš na stání než na sezení.", img: img("1524368535928-5b5e00ddc76b"), href: "#" },
+        { name: "Hey Apple", tag: "POP / FUNK", desc: "Moderní pop a funk s tahem na diskotéku. Mladá kapela, čerstvý zvuk.", img: img("1516450360452-9312f5e86fc7"), href: "#" }
+      ],
+      moderators: [
+        { name: "Roman Anděl", note: "moderátor" },
+        { name: "Václav Votata", note: "DJ Basslicker" },
+        { name: "Pavel Janovský", note: "moderátor" },
+        { name: "Marcus Burian", note: "moderátor / DJ" }
+      ],
+      djs: [
+        { name: "DJ Laviz", href: "#" },
+        { name: "Marcus Burian", href: "#" },
+        { name: "Sebastian Leeroy", href: "#" },
+        { name: "DJ Basslicker", href: "#" }
+      ],
+      sound: [
+        { title: "Kapela", desc: "Kompletní aparát i monitoring pro živou kapelu, doladěný na konkrétní sál." },
+        { title: "Moderátor", desc: "Bezdrátové mikrofony, ať je slyšet každé slovo i z konce sálu." },
+        { title: "Nástup tříd", desc: "Zvuk i podkres pro slavnostní nástup a předání šerp bez zádrhelů." },
+        { title: "Proslovy", desc: "Ředitel, třídní, rodiče — čistý zvuk pro každý mikrofon na pódiu." },
+        { title: "Sběr do šerpy", desc: "Ozvučení půlnočního programu a sběru, aby to mělo grády." },
+        { title: "Diskotéka", desc: "Kvalitní zvuk a světla na afterparty, dokud lidi tančí." }
+      ],
+      reviews: [
+        { quote: "Poradili nám se sálem dřív, než jsme cokoli podepsali. Ušetřili nám ostudu s ozvučením, o kterém jsme netušili, že bude problém.", name: "Tereza K.", initials: "TK", meta: "MATURITNÍ VÝBOR · GYMNÁZIUM" },
+        { quote: "Kapelu i techniku jsme měli od jednoho člověka. Nemuseli jsme nic dohadovat — přijeli, postavili, hrálo to celý večer.", name: "Adam P.", initials: "AP", meta: "PŘEDSEDA VÝBORU · SPŠ" },
+        { quote: "Technik byl na místě od začátku do konce. Když se něco dělo, hned to vyřešil. Za nás jasné doporučení pro další ročníky.", name: "Nikola V.", initials: "NV", meta: "TŘÍDA 4.A · OBCHODNÍ AKADEMIE" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
