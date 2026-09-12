@@ -213,7 +213,18 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 980px;
+    min-width: 900px;
+  }
+
+  @media (min-width: 761px) {
+    td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+      max-width: none;
+      white-space: nowrap;
+    }
+    td:nth-child(5) { max-width: 100px; }
+    td:nth-child(6), td:nth-child(7), td:nth-child(8) {
+      white-space: nowrap;
+    }
   }
 
   thead th {
@@ -315,7 +326,7 @@
     appearance: none;
     -webkit-appearance: none;
     text-align: center;
-    min-width: 150px;
+    min-width: 118px;
   }
   select.status-select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 
@@ -335,7 +346,7 @@
     font-size: 13px;
     padding: 5px 6px;
     border-radius: 6px;
-    width: 130px;
+    width: 105px;
   }
   input.date-input:hover { background: var(--surface-2); border-color: var(--border); }
   input.date-input:focus { outline: none; background: var(--bg); border-color: var(--accent); }
@@ -582,9 +593,7 @@
   var STATUSES = [
     { id: "novy",        label: "Nový",               bg: "#FFD54F", fg: "#3d3000" },
     { id: "kontaktovan", label: "Kontaktován",         bg: "#4CAF50", fg: "#ffffff" },
-    { id: "cekam",       label: "Čekám na odpověď",    bg: "#F8BBD0", fg: "#6a1b3d" },
     { id: "followup",    label: "Follow-up",           bg: "#FF9800", fg: "#ffffff" },
-    { id: "komunikace",  label: "Komunikace",          bg: "#2196F3", fg: "#ffffff" },
     { id: "schuzka",     label: "Schůzka",             bg: "#A5D6A7", fg: "#1b4620" },
     { id: "nabidka",     label: "Nabídka odeslána",    bg: "#1B5E20", fg: "#ffffff" },
     { id: "ziskan",      label: "Získán klient",       bg: "#70AD47", fg: "#ffffff" },
