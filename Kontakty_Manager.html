@@ -133,6 +133,9 @@
 
   button.icon-btn {
     padding: 8px 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Stats */
@@ -247,7 +250,7 @@
     overflow: hidden;
   }
 
-  td[contenteditable="true"], .cell-text {
+  td[contenteditable="true"] {
     cursor: text;
     outline: none;
     border-radius: 6px;
@@ -256,10 +259,10 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  td[contenteditable="true"]:hover, .cell-text:hover {
+  td[contenteditable="true"]:hover {
     background: var(--surface-2);
   }
-  td[contenteditable="true"]:focus, .cell-text:focus {
+  td[contenteditable="true"]:focus {
     background: var(--bg);
     box-shadow: inset 0 0 0 2px var(--accent);
     overflow: visible;
@@ -273,29 +276,37 @@
 
   .col-firma { font-weight: 600; }
 
-  .cell-with-action {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .cell-with-action .cell-text { flex: 1; min-width: 0; }
-
-  .quick-action {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 7px;
-    text-decoration: none;
-    font-size: 13px;
+  a.cell-link {
+    display: block;
     color: var(--accent);
-    background: transparent;
-    transition: background .15s, transform .1s;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 6px;
+    padding: 2px 0;
   }
-  .quick-action:hover { background: var(--surface-2); transform: scale(1.08); }
-  .quick-action:active { transform: scale(0.95); }
+  a.cell-link:hover { text-decoration: underline; }
+  span.cell-link {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 2px 0;
+  }
+
+  input.cell-edit-input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 2px 4px;
+    border: none;
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: inset 0 0 0 2px var(--accent);
+  }
+  input.cell-edit-input:focus { outline: none; }
 
   .note-preview {
     display: flex;
@@ -408,7 +419,16 @@
   }
 
   .row-actions { display: flex; gap: 6px; }
-  .row-actions button { padding: 6px 8px; font-size: 13px; }
+  .row-actions button.danger {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   .empty-state {
     text-align: center;
@@ -528,9 +548,12 @@
 <div class="wrap">
 
   <header class="app-header">
-    <h1>📇 Kontakty Manager</h1>
+    <h1>Kontakty Manager</h1>
     <div class="header-actions">
-      <button type="button" class="icon-btn" id="themeToggleBtn" title="Přepnout světlý/tmavý režim">🌓</button>
+      <button type="button" class="icon-btn" id="themeToggleBtn" title="Přepnout světlý/tmavý režim">
+        <svg class="theme-icon icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="theme-icon icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
       <button type="button" class="primary" id="addContactBtn">+ Přidat kontakt</button>
     </div>
   </header>
@@ -555,26 +578,26 @@
     </div>
     <div class="spacer"></div>
     <div class="toolbar-group">
-      <button type="button" id="exportCsvBtn">⬇ Export CSV</button>
-      <button type="button" id="backupBtn">💾 Zálohovat JSON</button>
-      <button type="button" id="restoreBtn">📂 Obnovit JSON</button>
+      <button type="button" id="exportCsvBtn">Export CSV</button>
+      <button type="button" id="backupBtn">Zálohovat JSON</button>
+      <button type="button" id="restoreBtn">Obnovit JSON</button>
       <input type="file" id="restoreFileInput" accept="application/json">
-      <button type="button" id="printBtn">🖨 Tisk</button>
+      <button type="button" id="printBtn">Tisk</button>
     </div>
   </div>
 
   <div class="table-container">
     <table>
       <colgroup>
-        <col style="width:15%">
-        <col style="width:16%">
-        <col style="width:20%">
         <col style="width:13%">
-        <col style="width:13%">
-        <col style="width:9%">
-        <col style="width:9%">
-        <col style="width:9%">
-        <col style="width:5%">
+        <col style="width:14%">
+        <col style="width:17%">
+        <col style="width:10%">
+        <col style="width:11%">
+        <col style="width:12%">
+        <col style="width:12%">
+        <col style="width:7%">
+        <col style="width:4%">
       </colgroup>
       <thead>
         <tr>
@@ -594,7 +617,7 @@
     <div class="empty-state" id="emptyState" hidden>Zatím žádné kontakty. Klikněte na „+ Přidat kontakt“.</div>
   </div>
 
-  <p class="hint">Klikněte na buňku (firma, web, e-mail, telefon) pro úpravu na místě. Ikony u webu/e-mailu/telefonu otevřou stránku, e-mail nebo vytočí číslo. Data se ukládají automaticky do prohlížeče (LocalStorage).</p>
+  <p class="hint">Firmu upravíte kliknutím. Web, e-mail a telefon fungují jako odkaz (otevře stránku / e-mail / vytočí číslo) — dvojklikem je upravíte. Data se ukládají automaticky do prohlížeče (LocalStorage).</p>
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
@@ -703,6 +726,20 @@
   }
 
   // ---------- Theme ----------
+  function getEffectiveTheme(mode) {
+    if (mode === "light" || mode === "dark") return mode;
+    var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return prefersDark ? "dark" : "light";
+  }
+
+  function updateThemeIcon(effective) {
+    var sun = document.querySelector(".icon-sun");
+    var moon = document.querySelector(".icon-moon");
+    if (!sun || !moon) return;
+    sun.hidden = effective !== "dark";
+    moon.hidden = effective === "dark";
+  }
+
   function applyTheme(mode) {
     var root = document.documentElement;
     if (mode === "light" || mode === "dark") {
@@ -710,20 +747,26 @@
     } else {
       root.removeAttribute("data-theme");
     }
+    updateThemeIcon(getEffectiveTheme(mode));
   }
 
   function initTheme() {
     var saved = null;
     try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
     applyTheme(saved);
+    if (window.matchMedia) {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
+        var current = null;
+        try { current = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (!current) updateThemeIcon(getEffectiveTheme(null));
+      });
+    }
   }
 
   function toggleTheme() {
     var current = null;
     try { current = localStorage.getItem(THEME_KEY); } catch (e) {}
-    var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    var effectiveCurrent = current || (prefersDark ? "dark" : "light");
-    var next = effectiveCurrent === "dark" ? "light" : "dark";
+    var next = getEffectiveTheme(current) === "dark" ? "light" : "dark";
     try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
     applyTheme(next);
   }
@@ -922,70 +965,70 @@
     return td;
   }
 
-  function buildContactLinkCell(contact, field, label, icon, hrefBuilder, openInNewTab) {
+  function buildContactLinkCell(contact, field, label, hrefBuilder, openInNewTab) {
     var td = document.createElement("td");
     td.setAttribute("data-label", label);
-
-    var wrap = document.createElement("div");
-    wrap.className = "cell-with-action";
-
-    var span = document.createElement("span");
-    span.className = "cell-text";
-    span.setAttribute("contenteditable", "true");
-    span.setAttribute("data-field", field);
-    span.setAttribute("data-id", contact.id);
-    var val = contact[field] || "";
-    span.textContent = val;
-    if (!val) span.classList.add("empty-val");
-
-    span.addEventListener("focus", function () {
-      span.classList.remove("empty-val");
-    });
-    span.addEventListener("blur", function () {
-      var newVal = span.textContent.trim();
-      updateContact(contact.id, field, newVal);
-      refreshQuickAction(wrap, contact.id, field, icon, hrefBuilder, openInNewTab);
-    });
-    span.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        span.blur();
-      }
-      if (e.key === "Escape") {
-        span.textContent = contact[field] || "";
-        span.blur();
-      }
-    });
-
-    wrap.appendChild(span);
-    refreshQuickAction(wrap, contact.id, field, icon, hrefBuilder, openInNewTab, val);
-    td.appendChild(wrap);
+    renderLinkCellContent(td, contact, field, hrefBuilder, openInNewTab);
     return td;
   }
 
-  function refreshQuickAction(wrap, contactId, field, icon, hrefBuilder, openInNewTab, currentVal) {
-    var existing = wrap.querySelector(".quick-action");
-    if (existing) existing.remove();
-    var contact = state.contacts.find(function (c) { return c.id === contactId; });
-    var val = currentVal !== undefined ? currentVal : (contact ? contact[field] : "");
-    if (!val) return;
-    var a = document.createElement("a");
-    a.className = "quick-action";
-    a.href = hrefBuilder(val);
-    a.title = label_for(field);
-    a.textContent = icon;
-    if (openInNewTab) {
-      a.target = "_blank";
-      a.rel = "noopener";
+  function renderLinkCellContent(td, contact, field, hrefBuilder, openInNewTab) {
+    td.innerHTML = "";
+    var val = contact[field] || "";
+
+    if (val) {
+      var a = document.createElement("a");
+      a.className = "cell-link";
+      a.href = hrefBuilder(val);
+      a.textContent = val;
+      if (openInNewTab) {
+        a.target = "_blank";
+        a.rel = "noopener";
+      }
+      a.addEventListener("dblclick", function (e) {
+        e.preventDefault();
+        switchCellToEdit(td, contact, field, hrefBuilder, openInNewTab);
+      });
+      td.appendChild(a);
+    } else {
+      var placeholder = document.createElement("span");
+      placeholder.className = "cell-link empty-val";
+      placeholder.textContent = "—";
+      placeholder.addEventListener("dblclick", function () {
+        switchCellToEdit(td, contact, field, hrefBuilder, openInNewTab);
+      });
+      td.appendChild(placeholder);
     }
-    wrap.appendChild(a);
   }
 
-  function label_for(field) {
-    if (field === "web") return "Otevřít web";
-    if (field === "email") return "Napsat e-mail";
-    if (field === "telefon") return "Zavolat";
-    return "";
+  function switchCellToEdit(td, contact, field, hrefBuilder, openInNewTab) {
+    td.innerHTML = "";
+    var input = document.createElement("input");
+    input.type = "text";
+    input.className = "cell-edit-input";
+    input.value = contact[field] || "";
+    td.appendChild(input);
+    input.focus();
+    input.select();
+
+    function commit() {
+      var newVal = input.value.trim();
+      contact[field] = newVal;
+      updateContact(contact.id, field, newVal);
+      renderLinkCellContent(td, contact, field, hrefBuilder, openInNewTab);
+    }
+
+    input.addEventListener("blur", commit);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        input.blur();
+      }
+      if (e.key === "Escape") {
+        input.removeEventListener("blur", commit);
+        renderLinkCellContent(td, contact, field, hrefBuilder, openInNewTab);
+      }
+    });
   }
 
   function buildRow(contact) {
@@ -997,9 +1040,9 @@
     firmaTd.classList.add("col-firma");
     tr.appendChild(firmaTd);
 
-    tr.appendChild(buildContactLinkCell(contact, "web", "Web", "🔗", normalizeUrl, true));
-    tr.appendChild(buildContactLinkCell(contact, "email", "E-mail", "✉", function (v) { return "mailto:" + v; }, false));
-    tr.appendChild(buildContactLinkCell(contact, "telefon", "Telefon", "📞", function (v) { return "tel:" + v.replace(/\s+/g, ""); }, false));
+    tr.appendChild(buildContactLinkCell(contact, "web", "Web", normalizeUrl, true));
+    tr.appendChild(buildContactLinkCell(contact, "email", "E-mail", function (v) { return "mailto:" + v; }, false));
+    tr.appendChild(buildContactLinkCell(contact, "telefon", "Telefon", function (v) { return "tel:" + v.replace(/\s+/g, ""); }, false));
 
     // Stav
     var stavTd = document.createElement("td");
@@ -1084,7 +1127,8 @@
     delBtn.type = "button";
     delBtn.className = "danger";
     delBtn.title = "Smazat kontakt";
-    delBtn.textContent = "🗑";
+    delBtn.setAttribute("aria-label", "Smazat kontakt");
+    delBtn.textContent = "×";
     delBtn.addEventListener("click", function () {
       deleteContact(contact.id);
     });
