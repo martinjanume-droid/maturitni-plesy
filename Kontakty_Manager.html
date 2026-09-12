@@ -138,6 +138,43 @@
     justify-content: center;
   }
 
+  /* Follow-up banner */
+  .followup-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid #FF9800;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    font-size: 13.5px;
+    flex-wrap: wrap;
+  }
+  .followup-banner[hidden] { display: none; }
+  .followup-banner-text { flex: 1 1 320px; min-width: 0; }
+  .followup-banner-text b { font-weight: 700; }
+  .followup-banner-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .banner-btn { font-size: 12.5px; padding: 6px 10px; }
+  .banner-btn-close {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   /* Stats */
   .stats {
     display: flex;
@@ -558,6 +595,14 @@
     </div>
   </header>
 
+  <div class="followup-banner" id="followupBanner" hidden>
+    <div class="followup-banner-text" id="followupBannerText"></div>
+    <div class="followup-banner-actions">
+      <button type="button" id="notifyPermissionBtn" class="banner-btn" hidden>Povolit upozornění v prohlížeči</button>
+      <button type="button" id="dismissBannerBtn" class="banner-btn-close" title="Zavřít" aria-label="Zavřít">×</button>
+    </div>
+  </div>
+
   <div class="stats" id="statsBar"></div>
 
   <div class="toolbar">
@@ -617,7 +662,7 @@
     <div class="empty-state" id="emptyState" hidden>Zatím žádné kontakty. Klikněte na „+ Přidat kontakt“.</div>
   </div>
 
-  <p class="hint">Firmu upravíte kliknutím. Web, e-mail a telefon fungují jako odkaz (otevře stránku / e-mail / vytočí číslo) — dvojklikem je upravíte. Data se ukládají automaticky do prohlížeče (LocalStorage).</p>
+  <p class="hint">Firmu upravíte kliknutím. Web, e-mail a telefon fungují jako odkaz (otevře stránku / e-mail / vytočí číslo) — dvojklikem je upravíte. Sloupec Další kontakt se zbarví oranžově (do 3 dnů) nebo červeně (po termínu) a při otevření souboru na to upozorní i horní lišta. Data se ukládají automaticky do prohlížeče (LocalStorage).</p>
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
@@ -807,12 +852,73 @@
     return parts[2] + "." + parts[1] + "." + parts[0];
   }
 
-  function isOverdue(dateStr) {
-    if (!dateStr) return false;
+  var FOLLOWUP_WARNING_DAYS = 3;
+
+  function daysUntil(dateStr) {
     var today = new Date();
     today.setHours(0, 0, 0, 0);
     var d = new Date(dateStr + "T00:00:00");
-    return d < today;
+    return Math.round((d - today) / 86400000);
+  }
+
+  function isOverdue(dateStr) {
+    if (!dateStr) return false;
+    return daysUntil(dateStr) < 0;
+  }
+
+  function isDueSoon(dateStr) {
+    if (!dateStr) return false;
+    var days = daysUntil(dateStr);
+    return days >= 0 && days <= FOLLOWUP_WARNING_DAYS;
+  }
+
+  function getFollowupAlerts() {
+    return state.contacts
+      .filter(function (c) { return c.dalsiKontakt && (isOverdue(c.dalsiKontakt) || isDueSoon(c.dalsiKontakt)); })
+      .sort(function (a, b) { return a.dalsiKontakt.localeCompare(b.dalsiKontakt); });
+  }
+
+  var bannerDismissedThisSession = false;
+
+  function renderFollowupBanner() {
+    var banner = document.getElementById("followupBanner");
+    var alerts = getFollowupAlerts();
+
+    if (bannerDismissedThisSession || alerts.length === 0) {
+      banner.hidden = true;
+      return;
+    }
+
+    var overdueCount = alerts.filter(function (c) { return isOverdue(c.dalsiKontakt); }).length;
+    var soonCount = alerts.length - overdueCount;
+    var parts = [];
+    if (overdueCount) parts.push(overdueCount + (overdueCount === 1 ? " kontakt po termínu" : " kontakty po termínu"));
+    if (soonCount) parts.push(soonCount + " do " + FOLLOWUP_WARNING_DAYS + " dnů");
+
+    var names = alerts.slice(0, 4).map(function (c) {
+      return (c.firma || "bez názvu") + " (" + formatDateDisplay(c.dalsiKontakt) + ")";
+    }).join(", ");
+    if (alerts.length > 4) names += " a další " + (alerts.length - 4);
+
+    document.getElementById("followupBannerText").innerHTML =
+      "<b>Blíží se follow-up</b> — " + escapeHtml(parts.join(", ")) + ": " + escapeHtml(names);
+
+    var notifyBtn = document.getElementById("notifyPermissionBtn");
+    notifyBtn.hidden = !("Notification" in window) || Notification.permission !== "default";
+
+    banner.hidden = false;
+  }
+
+  function fireDesktopNotification(alerts) {
+    if (!("Notification" in window) || Notification.permission !== "granted" || alerts.length === 0) return;
+    var body = alerts.slice(0, 5).map(function (c) {
+      return (c.firma || "bez názvu") + " – " + formatDateDisplay(c.dalsiKontakt);
+    }).join("\n");
+    try {
+      new Notification("Kontakty Manager – blíží se follow-up", { body: body });
+    } catch (e) {
+      console.error("Nepodařilo se zobrazit upozornění.", e);
+    }
   }
 
   // ---------- Rendering ----------
@@ -900,6 +1006,8 @@
     var tbody = document.getElementById("tableBody");
     var emptyState = document.getElementById("emptyState");
     tbody.innerHTML = "";
+
+    renderFollowupBanner();
 
     var list = getFilteredSortedContacts();
 
@@ -1088,9 +1196,13 @@
     if (isOverdue(contact.dalsiKontakt)) {
       dalsiInput.style.color = "var(--danger)";
       dalsiInput.style.fontWeight = "700";
+    } else if (isDueSoon(contact.dalsiKontakt)) {
+      dalsiInput.style.color = "#FF9800";
+      dalsiInput.style.fontWeight = "700";
     }
     dalsiInput.addEventListener("change", function () {
       updateContact(contact.id, "dalsiKontakt", dalsiInput.value);
+      renderFollowupBanner();
     });
     dalsiTd.appendChild(dalsiInput);
     tr.appendChild(dalsiTd);
@@ -1398,6 +1510,21 @@
     });
 
     document.getElementById("themeToggleBtn").addEventListener("click", toggleTheme);
+
+    document.getElementById("dismissBannerBtn").addEventListener("click", function () {
+      bannerDismissedThisSession = true;
+      document.getElementById("followupBanner").hidden = true;
+    });
+
+    document.getElementById("notifyPermissionBtn").addEventListener("click", function () {
+      Notification.requestPermission().then(function (permission) {
+        renderFollowupBanner();
+        if (permission === "granted") {
+          showToast("Upozornění v prohlížeči povoleno.");
+          fireDesktopNotification(getFollowupAlerts());
+        }
+      });
+    });
   }
 
   function init() {
@@ -1406,6 +1533,7 @@
     populateStatusSelects();
     bindEvents();
     renderTable();
+    fireDesktopNotification(getFollowupAlerts());
   }
 
   document.addEventListener("DOMContentLoaded", init);
