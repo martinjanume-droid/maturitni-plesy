@@ -206,25 +206,14 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    overflow-x: auto;
+    overflow-x: hidden;
     box-shadow: var(--shadow);
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 900px;
-  }
-
-  @media (min-width: 761px) {
-    td:nth-child(2), td:nth-child(3), td:nth-child(4) {
-      max-width: none;
-      white-space: nowrap;
-    }
-    td:nth-child(5) { max-width: 100px; }
-    td:nth-child(6), td:nth-child(7), td:nth-child(8) {
-      white-space: nowrap;
-    }
+    table-layout: fixed;
   }
 
   thead th {
@@ -246,6 +235,7 @@
 
   tbody tr {
     border-bottom: 1px solid var(--border);
+    transition: background .12s;
   }
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: var(--surface-2); }
@@ -254,28 +244,58 @@
     padding: 10px 14px;
     font-size: 14px;
     vertical-align: top;
-    max-width: 220px;
+    overflow: hidden;
   }
 
-  td[contenteditable="true"] {
+  td[contenteditable="true"], .cell-text {
     cursor: text;
     outline: none;
     border-radius: 6px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  td[contenteditable="true"]:hover {
+  td[contenteditable="true"]:hover, .cell-text:hover {
     background: var(--surface-2);
   }
-  td[contenteditable="true"]:focus {
+  td[contenteditable="true"]:focus, .cell-text:focus {
     background: var(--bg);
     box-shadow: inset 0 0 0 2px var(--accent);
+    overflow: visible;
+    white-space: normal;
+    word-break: break-word;
   }
-  td.empty-val { color: var(--text-muted); font-style: italic; }
+  td.empty-val, .empty-val { color: var(--text-muted); font-style: italic; }
 
   td a { color: var(--accent); text-decoration: none; }
   td a:hover { text-decoration: underline; }
 
-  .col-firma { font-weight: 600; min-width: 150px; }
-  .col-note { max-width: 260px; }
+  .col-firma { font-weight: 600; }
+
+  .cell-with-action {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .cell-with-action .cell-text { flex: 1; min-width: 0; }
+
+  .quick-action {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-size: 13px;
+    color: var(--accent);
+    background: transparent;
+    transition: background .15s, transform .1s;
+  }
+  .quick-action:hover { background: var(--surface-2); transform: scale(1.08); }
+  .quick-action:active { transform: scale(0.95); }
 
   .note-preview {
     display: flex;
@@ -287,7 +307,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 190px;
+    flex: 1;
+    min-width: 0;
     color: var(--text-muted);
   }
   .note-preview .caret {
@@ -318,16 +339,18 @@
 
   select.status-select {
     border: none;
-    padding: 6px 10px;
+    padding: 6px 8px;
     border-radius: 999px;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
     text-align: center;
-    min-width: 118px;
+    width: 100%;
+    transition: transform .1s;
   }
+  select.status-select:hover { transform: scale(1.02); }
   select.status-select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 
   .badge {
@@ -346,10 +369,43 @@
     font-size: 13px;
     padding: 5px 6px;
     border-radius: 6px;
-    width: 105px;
+    width: 100%;
   }
   input.date-input:hover { background: var(--surface-2); border-color: var(--border); }
   input.date-input:focus { outline: none; background: var(--bg); border-color: var(--accent); }
+
+  /* Toasts */
+  .toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 300;
+    max-width: 320px;
+  }
+  .toast {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    box-shadow: var(--shadow-lg);
+    animation: toastIn .18s ease-out;
+  }
+  .toast.error { border-left-color: var(--danger); }
+  .toast.fade-out { animation: toastOut .18s ease-in forwards; }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes toastOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(8px); }
+  }
 
   .row-actions { display: flex; gap: 6px; }
   .row-actions button { padding: 6px 8px; font-size: 13px; }
@@ -428,7 +484,6 @@
     body { padding: 12px; }
     .toolbar { flex-direction: column; align-items: stretch; }
     .toolbar .spacer { display: none; }
-    table { min-width: 0; }
     thead { display: none; }
     tbody tr {
       display: block;
@@ -441,7 +496,6 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      max-width: none;
       padding: 7px 2px;
       border-bottom: 1px dashed var(--border);
     }
@@ -485,7 +539,7 @@
 
   <div class="toolbar">
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Hledat podle firmy, e-mailu nebo osoby…">
+      <input type="text" id="searchInput" placeholder="Hledat podle firmy nebo e-mailu…">
     </div>
     <div class="toolbar-group">
       <select id="filterStatus">
@@ -511,13 +565,23 @@
 
   <div class="table-container">
     <table>
+      <colgroup>
+        <col style="width:15%">
+        <col style="width:16%">
+        <col style="width:20%">
+        <col style="width:13%">
+        <col style="width:13%">
+        <col style="width:9%">
+        <col style="width:9%">
+        <col style="width:9%">
+        <col style="width:5%">
+      </colgroup>
       <thead>
         <tr>
           <th class="sortable" data-sort="firma">Firma <span class="arrow"></span></th>
           <th>Web</th>
           <th>E-mail</th>
           <th>Telefon</th>
-          <th>Osoba</th>
           <th>Stav</th>
           <th class="sortable" data-sort="datumKontaktu">Datum kontaktu <span class="arrow"></span></th>
           <th class="sortable" data-sort="dalsiKontakt">Další kontakt <span class="arrow"></span></th>
@@ -530,8 +594,10 @@
     <div class="empty-state" id="emptyState" hidden>Zatím žádné kontakty. Klikněte na „+ Přidat kontakt“.</div>
   </div>
 
-  <p class="hint">Klikněte na buňku (firma, web, e-mail, telefon, osoba) pro úpravu na místě. Data se ukládají automaticky do prohlížeče (LocalStorage).</p>
+  <p class="hint">Klikněte na buňku (firma, web, e-mail, telefon) pro úpravu na místě. Ikony u webu/e-mailu/telefonu otevřou stránku, e-mail nebo vytočí číslo. Data se ukládají automaticky do prohlížeče (LocalStorage).</p>
 </div>
+
+<div class="toast-container" id="toastContainer"></div>
 
 <div class="modal-overlay" id="modalOverlay" hidden>
   <div class="modal">
@@ -553,10 +619,6 @@
         <div class="field">
           <label for="f_telefon">Telefon</label>
           <input type="tel" id="f_telefon">
-        </div>
-        <div class="field">
-          <label for="f_osoba">Kontaktní osoba</label>
-          <input type="text" id="f_osoba">
         </div>
         <div class="field">
           <label for="f_stav">Stav</label>
@@ -604,13 +666,6 @@
   var statusById = {};
   STATUSES.forEach(function (s) { statusById[s.id] = s; });
 
-  var EDITABLE_TEXT_FIELDS = ["firma", "web", "email", "telefon", "osoba"];
-  var FIELD_LABELS = {
-    firma: "Firma", web: "Web", email: "E-mail", telefon: "Telefon",
-    osoba: "Osoba", stav: "Stav", datumKontaktu: "Datum kontaktu",
-    dalsiKontakt: "Další kontakt", poznamka: "Poznámka"
-  };
-
   var state = {
     contacts: [],
     search: "",
@@ -638,7 +693,7 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state.contacts));
     } catch (e) {
       console.error("Nepodařilo se uložit data.", e);
-      alert("Data se nepodařilo uložit do LocalStorage (možná je plné úložiště).");
+      showToast("Data se nepodařilo uložit (úložiště prohlížeče je plné).", "error");
     }
   }
 
@@ -671,6 +726,19 @@
     var next = effectiveCurrent === "dark" ? "light" : "dark";
     try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
     applyTheme(next);
+  }
+
+  // ---------- Toasts ----------
+  function showToast(message, type) {
+    var container = document.getElementById("toastContainer");
+    var toast = document.createElement("div");
+    toast.className = "toast" + (type === "error" ? " error" : "");
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(function () {
+      toast.classList.add("fade-out");
+      toast.addEventListener("animationend", function () { toast.remove(); });
+    }, type === "error" ? 4000 : 2200);
   }
 
   // ---------- Helpers ----------
@@ -757,8 +825,7 @@
       var q = state.search.toLowerCase();
       list = list.filter(function (c) {
         return (c.firma || "").toLowerCase().indexOf(q) !== -1 ||
-               (c.email || "").toLowerCase().indexOf(q) !== -1 ||
-               (c.osoba || "").toLowerCase().indexOf(q) !== -1;
+               (c.email || "").toLowerCase().indexOf(q) !== -1;
       });
     }
 
@@ -855,11 +922,70 @@
     return td;
   }
 
-  function buildLinkDisplayCell(contact, field, label) {
-    // Web / e-mail / telefon shown as clickable link when not focused,
-    // but still editable via contenteditable text.
-    var td = buildEditableCell(contact, field, label);
+  function buildContactLinkCell(contact, field, label, icon, hrefBuilder, openInNewTab) {
+    var td = document.createElement("td");
+    td.setAttribute("data-label", label);
+
+    var wrap = document.createElement("div");
+    wrap.className = "cell-with-action";
+
+    var span = document.createElement("span");
+    span.className = "cell-text";
+    span.setAttribute("contenteditable", "true");
+    span.setAttribute("data-field", field);
+    span.setAttribute("data-id", contact.id);
+    var val = contact[field] || "";
+    span.textContent = val;
+    if (!val) span.classList.add("empty-val");
+
+    span.addEventListener("focus", function () {
+      span.classList.remove("empty-val");
+    });
+    span.addEventListener("blur", function () {
+      var newVal = span.textContent.trim();
+      updateContact(contact.id, field, newVal);
+      refreshQuickAction(wrap, contact.id, field, icon, hrefBuilder, openInNewTab);
+    });
+    span.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        span.blur();
+      }
+      if (e.key === "Escape") {
+        span.textContent = contact[field] || "";
+        span.blur();
+      }
+    });
+
+    wrap.appendChild(span);
+    refreshQuickAction(wrap, contact.id, field, icon, hrefBuilder, openInNewTab, val);
+    td.appendChild(wrap);
     return td;
+  }
+
+  function refreshQuickAction(wrap, contactId, field, icon, hrefBuilder, openInNewTab, currentVal) {
+    var existing = wrap.querySelector(".quick-action");
+    if (existing) existing.remove();
+    var contact = state.contacts.find(function (c) { return c.id === contactId; });
+    var val = currentVal !== undefined ? currentVal : (contact ? contact[field] : "");
+    if (!val) return;
+    var a = document.createElement("a");
+    a.className = "quick-action";
+    a.href = hrefBuilder(val);
+    a.title = label_for(field);
+    a.textContent = icon;
+    if (openInNewTab) {
+      a.target = "_blank";
+      a.rel = "noopener";
+    }
+    wrap.appendChild(a);
+  }
+
+  function label_for(field) {
+    if (field === "web") return "Otevřít web";
+    if (field === "email") return "Napsat e-mail";
+    if (field === "telefon") return "Zavolat";
+    return "";
   }
 
   function buildRow(contact) {
@@ -871,10 +997,9 @@
     firmaTd.classList.add("col-firma");
     tr.appendChild(firmaTd);
 
-    tr.appendChild(buildLinkDisplayCell(contact, "web", "Web"));
-    tr.appendChild(buildLinkDisplayCell(contact, "email", "E-mail"));
-    tr.appendChild(buildLinkDisplayCell(contact, "telefon", "Telefon"));
-    tr.appendChild(buildEditableCell(contact, "osoba", "Osoba"));
+    tr.appendChild(buildContactLinkCell(contact, "web", "Web", "🔗", normalizeUrl, true));
+    tr.appendChild(buildContactLinkCell(contact, "email", "E-mail", "✉", function (v) { return "mailto:" + v; }, false));
+    tr.appendChild(buildContactLinkCell(contact, "telefon", "Telefon", "📞", function (v) { return "tel:" + v.replace(/\s+/g, ""); }, false));
 
     // Stav
     var stavTd = document.createElement("td");
@@ -974,7 +1099,7 @@
     var tr = document.createElement("tr");
     tr.className = "note-full-row";
     var td = document.createElement("td");
-    td.colSpan = 10;
+    td.colSpan = 9;
     var textarea = document.createElement("textarea");
     textarea.value = contact.poznamka || "";
     textarea.placeholder = "Poznámka…";
@@ -1001,7 +1126,6 @@
       web: data.web || "",
       email: data.email || "",
       telefon: data.telefon || "",
-      osoba: data.osoba || "",
       stav: data.stav || "novy",
       datumKontaktu: data.datumKontaktu || "",
       dalsiKontakt: data.dalsiKontakt || "",
@@ -1010,6 +1134,7 @@
     state.contacts.push(contact);
     save();
     renderTable();
+    showToast("Kontakt „" + contact.firma + "“ přidán.");
   }
 
   function updateContact(id, field, value) {
@@ -1029,6 +1154,7 @@
     delete state.expandedNotes[id];
     save();
     renderTable();
+    showToast("Kontakt „" + (contact.firma || "bez názvu") + "“ smazán.");
   }
 
   // ---------- CSV Export ----------
@@ -1041,7 +1167,7 @@
   }
 
   function exportCsv() {
-    var headers = ["Firma", "Web", "E-mail", "Telefon", "Osoba", "Stav", "Datum kontaktu", "Další kontakt", "Poznámka"];
+    var headers = ["Firma", "Web", "E-mail", "Telefon", "Stav", "Datum kontaktu", "Další kontakt", "Poznámka"];
     var rows = [headers.join(";")];
 
     getFilteredSortedContacts().forEach(function (c) {
@@ -1051,7 +1177,6 @@
         csvEscape(c.web),
         csvEscape(c.email),
         csvEscape(c.telefon),
-        csvEscape(c.osoba),
         csvEscape(stavLabel),
         csvEscape(formatDateDisplay(c.datumKontaktu)),
         csvEscape(formatDateDisplay(c.dalsiKontakt)),
@@ -1061,6 +1186,7 @@
 
     var csvContent = "﻿" + rows.join("\r\n");
     downloadBlob(csvContent, "kontakty_export_" + todayStamp() + ".csv", "text/csv;charset=utf-8;");
+    showToast("CSV export stažen (" + (rows.length - 1) + " kontaktů).");
   }
 
   function todayStamp() {
@@ -1089,6 +1215,7 @@
       contacts: state.contacts
     };
     downloadBlob(JSON.stringify(payload, null, 2), "kontakty_zaloha_" + todayStamp() + ".json", "application/json");
+    showToast("Záloha JSON stažena.");
   }
 
   function restoreJson(file) {
@@ -1115,9 +1242,9 @@
         }
         save();
         renderTable();
-        alert("Obnovení dokončeno.");
+        showToast("Obnovení dokončeno (" + contacts.length + " kontaktů).");
       } catch (err) {
-        alert("Chyba při načítání souboru: " + err.message);
+        showToast("Chyba při načítání souboru: " + err.message, "error");
       }
     };
     reader.readAsText(file);
@@ -1130,7 +1257,6 @@
       web: c.web || "",
       email: c.email || "",
       telefon: c.telefon || "",
-      osoba: c.osoba || "",
       stav: statusById[c.stav] ? c.stav : "novy",
       datumKontaktu: c.datumKontaktu || "",
       dalsiKontakt: c.dalsiKontakt || "",
@@ -1167,7 +1293,8 @@
       e.preventDefault();
       var firma = document.getElementById("f_firma").value.trim();
       if (!firma) {
-        alert("Pole „Firma“ je povinné.");
+        showToast("Pole „Firma“ je povinné.", "error");
+        document.getElementById("f_firma").focus();
         return;
       }
       addContact({
@@ -1175,7 +1302,6 @@
         web: document.getElementById("f_web").value.trim(),
         email: document.getElementById("f_email").value.trim(),
         telefon: document.getElementById("f_telefon").value.trim(),
-        osoba: document.getElementById("f_osoba").value.trim(),
         stav: document.getElementById("f_stav").value,
         datumKontaktu: document.getElementById("f_datumKontaktu").value,
         dalsiKontakt: document.getElementById("f_dalsiKontakt").value,
