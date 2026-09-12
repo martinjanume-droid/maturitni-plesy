@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakty Manager</title>
+<style>
+  :root {
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --surface-2: #f0f2f5;
+    --text: #1a1d21;
+    --text-muted: #62707c;
+    --border: #dfe4e8;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --danger: #dc2626;
+    --danger-hover: #b91c1c;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+    --radius: 10px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171a;
+      --surface: #1e2226;
+      --surface-2: #262b30;
+      --text: #e8eaed;
+      --text-muted: #9aa4ad;
+      --border: #33383e;
+      --accent: #3b82f6;
+      --accent-hover: #60a5fa;
+      --danger: #ef4444;
+      --danger-hover: #f87171;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
+    }
+  }
+
+  html[data-theme="dark"] {
+    --bg: #14171a;
+    --surface: #1e2226;
+    --surface-2: #262b30;
+    --text: #e8eaed;
+    --text-muted: #9aa4ad;
+    --border: #33383e;
+    --accent: #3b82f6;
+    --accent-hover: #60a5fa;
+    --danger: #ef4444;
+    --danger-hover: #f87171;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  html[data-theme="light"] {
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --surface-2: #f0f2f5;
+    --text: #1a1d21;
+    --text-muted: #62707c;
+    --border: #dfe4e8;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --danger: #dc2626;
+    --danger-hover: #b91c1c;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+  }
+
+  .wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  header.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  button {
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    padding: 9px 14px;
+    border-radius: 8px;
+    transition: background .15s, border-color .15s, transform .05s;
+    white-space: nowrap;
+  }
+  button:hover { background: var(--surface-2); }
+  button:active { transform: scale(0.97); }
+
+  button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 600;
+  }
+  button.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+  button.danger {
+    color: var(--danger);
+  }
+  button.danger:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+  button.icon-btn {
+    padding: 8px 10px;
+  }
+
+  /* Stats */
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .stat-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    box-shadow: var(--shadow);
+  }
+  .stat-chip .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .stat-chip b { font-weight: 700; }
+  .stat-chip.total { font-weight: 600; }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .toolbar input[type="text"],
+  .toolbar select {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .toolbar .search-box {
+    flex: 1 1 220px;
+    min-width: 160px;
+  }
+  .toolbar .search-box input { width: 100%; }
+
+  .toolbar .spacer { flex: 1 1 auto; }
+
+  .toolbar-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* Table */
+  .table-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 980px;
+  }
+
+  thead th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--text-muted);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+  }
+  thead th.sortable { cursor: pointer; user-select: none; }
+  thead th.sortable:hover { color: var(--text); }
+  thead th .arrow { font-size: 10px; opacity: .6; margin-left: 3px; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface-2); }
+
+  td {
+    padding: 10px 14px;
+    font-size: 14px;
+    vertical-align: top;
+    max-width: 220px;
+  }
+
+  td[contenteditable="true"] {
+    cursor: text;
+    outline: none;
+    border-radius: 6px;
+  }
+  td[contenteditable="true"]:hover {
+    background: var(--surface-2);
+  }
+  td[contenteditable="true"]:focus {
+    background: var(--bg);
+    box-shadow: inset 0 0 0 2px var(--accent);
+  }
+  td.empty-val { color: var(--text-muted); font-style: italic; }
+
+  td a { color: var(--accent); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+
+  .col-firma { font-weight: 600; min-width: 150px; }
+  .col-note { max-width: 260px; }
+
+  .note-preview {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .note-preview .note-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 190px;
+    color: var(--text-muted);
+  }
+  .note-preview .caret {
+    flex-shrink: 0;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    transition: transform .15s;
+  }
+  tr.note-expanded .note-preview .caret { transform: rotate(90deg); }
+
+  .note-full-row td {
+    background: var(--surface-2);
+    padding: 10px 14px 14px 14px;
+  }
+  .note-full-row textarea {
+    width: 100%;
+    min-height: 70px;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    resize: vertical;
+  }
+
+  select.status-select {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    text-align: center;
+    min-width: 150px;
+  }
+  select.status-select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  input.date-input {
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 5px 6px;
+    border-radius: 6px;
+    width: 130px;
+  }
+  input.date-input:hover { background: var(--surface-2); border-color: var(--border); }
+  input.date-input:focus { outline: none; background: var(--bg); border-color: var(--accent); }
+
+  .row-actions { display: flex; gap: 6px; }
+  .row-actions button { padding: 6px 8px; font-size: 13px; }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal-overlay[hidden] { display: none; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 22px;
+  }
+  .modal h2 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .form-grid .full { grid-column: 1 / -1; }
+  .field label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+  }
+  .field textarea { min-height: 60px; resize: vertical; }
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .hint { font-size: 12px; color: var(--text-muted); margin-top: 10px; }
+
+  #restoreFileInput { display: none; }
+
+  @media (max-width: 760px) {
+    body { padding: 12px; }
+    .toolbar { flex-direction: column; align-items: stretch; }
+    .toolbar .spacer { display: none; }
+    table { min-width: 0; }
+    thead { display: none; }
+    tbody tr {
+      display: block;
+      padding: 10px 12px;
+      border-bottom: 6px solid var(--bg);
+      border-radius: 8px;
+    }
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      max-width: none;
+      padding: 7px 2px;
+      border-bottom: 1px dashed var(--border);
+    }
+    td:last-child { border-bottom: none; }
+    td::before {
+      content: attr(data-label);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      margin-right: 8px;
+    }
+    .note-preview .note-text { max-width: 140px; }
+    .row-actions { justify-content: flex-end; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: #fff; color: #000; padding: 0; }
+    .toolbar, .header-actions, .row-actions, .stats, .note-preview .caret { display: none !important; }
+    .table-container { box-shadow: none; border: 1px solid #999; overflow: visible; }
+    thead th { position: static; background: #eee !important; color: #000 !important; }
+    select.status-select { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    h1 { color: #000; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="app-header">
+    <h1>📇 Kontakty Manager</h1>
+    <div class="header-actions">
+      <button type="button" class="icon-btn" id="themeToggleBtn" title="Přepnout světlý/tmavý režim">🌓</button>
+      <button type="button" class="primary" id="addContactBtn">+ Přidat kontakt</button>
+    </div>
+  </header>
+
+  <div class="stats" id="statsBar"></div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Hledat podle firmy, e-mailu nebo osoby…">
+    </div>
+    <div class="toolbar-group">
+      <select id="filterStatus">
+        <option value="">Všechny stavy</option>
+      </select>
+      <select id="sortSelect">
+        <option value="firma-asc">Firma A–Z</option>
+        <option value="firma-desc">Firma Z–A</option>
+        <option value="datum-desc">Datum kontaktu (nejnovější)</option>
+        <option value="datum-asc">Datum kontaktu (nejstarší)</option>
+        <option value="dalsi-asc">Další kontakt (nejbližší)</option>
+      </select>
+    </div>
+    <div class="spacer"></div>
+    <div class="toolbar-group">
+      <button type="button" id="exportCsvBtn">⬇ Export CSV</button>
+      <button type="button" id="backupBtn">💾 Zálohovat JSON</button>
+      <button type="button" id="restoreBtn">📂 Obnovit JSON</button>
+      <input type="file" id="restoreFileInput" accept="application/json">
+      <button type="button" id="printBtn">🖨 Tisk</button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th class="sortable" data-sort="firma">Firma <span class="arrow"></span></th>
+          <th>Web</th>
+          <th>E-mail</th>
+          <th>Telefon</th>
+          <th>Osoba</th>
+          <th>Stav</th>
+          <th class="sortable" data-sort="datumKontaktu">Datum kontaktu <span class="arrow"></span></th>
+          <th class="sortable" data-sort="dalsiKontakt">Další kontakt <span class="arrow"></span></th>
+          <th>Poznámka</th>
+          <th>Akce</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="empty-state" id="emptyState" hidden>Zatím žádné kontakty. Klikněte na „+ Přidat kontakt“.</div>
+  </div>
+
+  <p class="hint">Klikněte na buňku (firma, web, e-mail, telefon, osoba) pro úpravu na místě. Data se ukládají automaticky do prohlížeče (LocalStorage).</p>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal">
+    <h2>Nový kontakt</h2>
+    <form id="contactForm">
+      <div class="form-grid">
+        <div class="field full">
+          <label for="f_firma">Firma *</label>
+          <input type="text" id="f_firma" required>
+        </div>
+        <div class="field">
+          <label for="f_web">Web</label>
+          <input type="text" id="f_web" placeholder="https://…">
+        </div>
+        <div class="field">
+          <label for="f_email">E-mail</label>
+          <input type="email" id="f_email">
+        </div>
+        <div class="field">
+          <label for="f_telefon">Telefon</label>
+          <input type="tel" id="f_telefon">
+        </div>
+        <div class="field">
+          <label for="f_osoba">Kontaktní osoba</label>
+          <input type="text" id="f_osoba">
+        </div>
+        <div class="field">
+          <label for="f_stav">Stav</label>
+          <select id="f_stav"></select>
+        </div>
+        <div class="field">
+          <label for="f_datumKontaktu">Datum kontaktu</label>
+          <input type="date" id="f_datumKontaktu">
+        </div>
+        <div class="field">
+          <label for="f_dalsiKontakt">Další kontakt</label>
+          <input type="date" id="f_dalsiKontakt">
+        </div>
+        <div class="field full">
+          <label for="f_poznamka">Poznámka</label>
+          <textarea id="f_poznamka"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancelModalBtn">Zrušit</button>
+        <button type="submit" class="primary">Uložit kontakt</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "kontaktyManagerData_v1";
+  var THEME_KEY = "kontaktyManagerTheme";
+
+  var STATUSES = [
+    { id: "novy",        label: "Nový",               bg: "#FFD54F", fg: "#3d3000" },
+    { id: "kontaktovan", label: "Kontaktován",         bg: "#4CAF50", fg: "#ffffff" },
+    { id: "cekam",       label: "Čekám na odpověď",    bg: "#F8BBD0", fg: "#6a1b3d" },
+    { id: "followup",    label: "Follow-up",           bg: "#FF9800", fg: "#ffffff" },
+    { id: "komunikace",  label: "Komunikace",          bg: "#2196F3", fg: "#ffffff" },
+    { id: "schuzka",     label: "Schůzka",             bg: "#A5D6A7", fg: "#1b4620" },
+    { id: "nabidka",     label: "Nabídka odeslána",    bg: "#1B5E20", fg: "#ffffff" },
+    { id: "ziskan",      label: "Získán klient",       bg: "#70AD47", fg: "#ffffff" },
+    { id: "odmitnuto",   label: "Odmítnuto",           bg: "#E53935", fg: "#ffffff" },
+    { id: "bezodpovedi", label: "Bez odpovědi",        bg: "#9E9E9E", fg: "#ffffff" }
+  ];
+
+  var statusById = {};
+  STATUSES.forEach(function (s) { statusById[s.id] = s; });
+
+  var EDITABLE_TEXT_FIELDS = ["firma", "web", "email", "telefon", "osoba"];
+  var FIELD_LABELS = {
+    firma: "Firma", web: "Web", email: "E-mail", telefon: "Telefon",
+    osoba: "Osoba", stav: "Stav", datumKontaktu: "Datum kontaktu",
+    dalsiKontakt: "Další kontakt", poznamka: "Poznámka"
+  };
+
+  var state = {
+    contacts: [],
+    search: "",
+    filterStatus: "",
+    sort: "firma-asc",
+    expandedNotes: {}
+  };
+
+  // ---------- Persistence ----------
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) state.contacts = parsed;
+        else if (parsed && Array.isArray(parsed.contacts)) state.contacts = parsed.contacts;
+      }
+    } catch (e) {
+      console.error("Nepodařilo se načíst data z LocalStorage.", e);
+    }
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.contacts));
+    } catch (e) {
+      console.error("Nepodařilo se uložit data.", e);
+      alert("Data se nepodařilo uložit do LocalStorage (možná je plné úložiště).");
+    }
+  }
+
+  function uid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return "id-" + Date.now() + "-" + Math.random().toString(16).slice(2);
+  }
+
+  // ---------- Theme ----------
+  function applyTheme(mode) {
+    var root = document.documentElement;
+    if (mode === "light" || mode === "dark") {
+      root.setAttribute("data-theme", mode);
+    } else {
+      root.removeAttribute("data-theme");
+    }
+  }
+
+  function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
+    applyTheme(saved);
+  }
+
+  function toggleTheme() {
+    var current = null;
+    try { current = localStorage.getItem(THEME_KEY); } catch (e) {}
+    var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var effectiveCurrent = current || (prefersDark ? "dark" : "light");
+    var next = effectiveCurrent === "dark" ? "light" : "dark";
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  }
+
+  // ---------- Helpers ----------
+  function escapeHtml(str) {
+    return String(str == null ? "" : str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function normalizeUrl(url) {
+    if (!url) return "";
+    if (/^https?:\/\//i.test(url)) return url;
+    return "https://" + url;
+  }
+
+  function formatDateDisplay(iso) {
+    if (!iso) return "";
+    var parts = iso.split("-");
+    if (parts.length !== 3) return iso;
+    return parts[2] + "." + parts[1] + "." + parts[0];
+  }
+
+  function isOverdue(dateStr) {
+    if (!dateStr) return false;
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var d = new Date(dateStr + "T00:00:00");
+    return d < today;
+  }
+
+  // ---------- Rendering ----------
+  function populateStatusSelects() {
+    var filterSel = document.getElementById("filterStatus");
+    var formSel = document.getElementById("f_stav");
+    STATUSES.forEach(function (s) {
+      var opt1 = document.createElement("option");
+      opt1.value = s.id;
+      opt1.textContent = s.label;
+      filterSel.appendChild(opt1);
+
+      var opt2 = document.createElement("option");
+      opt2.value = s.id;
+      opt2.textContent = s.label;
+      formSel.appendChild(opt2);
+    });
+  }
+
+  function renderStats() {
+    var bar = document.getElementById("statsBar");
+    bar.innerHTML = "";
+
+    var totalChip = document.createElement("div");
+    totalChip.className = "stat-chip total";
+    totalChip.textContent = "Celkem: " + state.contacts.length;
+    bar.appendChild(totalChip);
+
+    STATUSES.forEach(function (s) {
+      var count = state.contacts.filter(function (c) { return c.stav === s.id; }).length;
+      if (count === 0) return;
+      var chip = document.createElement("div");
+      chip.className = "stat-chip";
+      var dot = document.createElement("span");
+      dot.className = "dot";
+      dot.style.background = s.bg;
+      chip.appendChild(dot);
+      var text = document.createElement("span");
+      text.innerHTML = escapeHtml(s.label) + ": <b>" + count + "</b>";
+      chip.appendChild(text);
+      bar.appendChild(chip);
+    });
+  }
+
+  function getFilteredSortedContacts() {
+    var list = state.contacts.slice();
+
+    if (state.filterStatus) {
+      list = list.filter(function (c) { return c.stav === state.filterStatus; });
+    }
+
+    if (state.search) {
+      var q = state.search.toLowerCase();
+      list = list.filter(function (c) {
+        return (c.firma || "").toLowerCase().indexOf(q) !== -1 ||
+               (c.email || "").toLowerCase().indexOf(q) !== -1 ||
+               (c.osoba || "").toLowerCase().indexOf(q) !== -1;
+      });
+    }
+
+    var sort = state.sort;
+    list.sort(function (a, b) {
+      switch (sort) {
+        case "firma-asc":
+          return (a.firma || "").localeCompare(b.firma || "", "cs");
+        case "firma-desc":
+          return (b.firma || "").localeCompare(a.firma || "", "cs");
+        case "datum-desc":
+          return (b.datumKontaktu || "").localeCompare(a.datumKontaktu || "");
+        case "datum-asc":
+          return (a.datumKontaktu || "").localeCompare(b.datumKontaktu || "");
+        case "dalsi-asc":
+          if (!a.dalsiKontakt && !b.dalsiKontakt) return 0;
+          if (!a.dalsiKontakt) return 1;
+          if (!b.dalsiKontakt) return -1;
+          return a.dalsiKontakt.localeCompare(b.dalsiKontakt);
+        default:
+          return 0;
+      }
+    });
+
+    return list;
+  }
+
+  function renderTable() {
+    var tbody = document.getElementById("tableBody");
+    var emptyState = document.getElementById("emptyState");
+    tbody.innerHTML = "";
+
+    var list = getFilteredSortedContacts();
+
+    if (state.contacts.length === 0) {
+      emptyState.hidden = false;
+      emptyState.textContent = "Zatím žádné kontakty. Klikněte na „+ Přidat kontakt“.";
+      renderStats();
+      return;
+    }
+    if (list.length === 0) {
+      emptyState.hidden = false;
+      emptyState.textContent = "Žádný kontakt neodpovídá filtru / hledání.";
+      renderStats();
+      return;
+    }
+    emptyState.hidden = true;
+
+    list.forEach(function (c) {
+      tbody.appendChild(buildRow(c));
+      if (state.expandedNotes[c.id]) {
+        tbody.appendChild(buildNoteRow(c));
+      }
+    });
+
+    renderStats();
+  }
+
+  function buildEditableCell(contact, field, label) {
+    var td = document.createElement("td");
+    td.setAttribute("data-label", label);
+    td.setAttribute("contenteditable", "true");
+    td.setAttribute("data-field", field);
+    td.setAttribute("data-id", contact.id);
+    var val = contact[field] || "";
+
+    if (field === "web" && val) {
+      td.classList.add("has-link");
+    }
+
+    td.textContent = val;
+    if (!val) td.classList.add("empty-val");
+
+    td.addEventListener("focus", function () {
+      td.classList.remove("empty-val");
+    });
+
+    td.addEventListener("blur", function () {
+      var newVal = td.textContent.trim();
+      updateContact(contact.id, field, newVal);
+    });
+
+    td.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        td.blur();
+      }
+      if (e.key === "Escape") {
+        td.textContent = contact[field] || "";
+        td.blur();
+      }
+    });
+
+    return td;
+  }
+
+  function buildLinkDisplayCell(contact, field, label) {
+    // Web / e-mail / telefon shown as clickable link when not focused,
+    // but still editable via contenteditable text.
+    var td = buildEditableCell(contact, field, label);
+    return td;
+  }
+
+  function buildRow(contact) {
+    var tr = document.createElement("tr");
+    tr.setAttribute("data-id", contact.id);
+    if (state.expandedNotes[contact.id]) tr.classList.add("note-expanded");
+
+    var firmaTd = buildEditableCell(contact, "firma", "Firma");
+    firmaTd.classList.add("col-firma");
+    tr.appendChild(firmaTd);
+
+    tr.appendChild(buildLinkDisplayCell(contact, "web", "Web"));
+    tr.appendChild(buildLinkDisplayCell(contact, "email", "E-mail"));
+    tr.appendChild(buildLinkDisplayCell(contact, "telefon", "Telefon"));
+    tr.appendChild(buildEditableCell(contact, "osoba", "Osoba"));
+
+    // Stav
+    var stavTd = document.createElement("td");
+    stavTd.setAttribute("data-label", "Stav");
+    var select = document.createElement("select");
+    select.className = "status-select";
+    STATUSES.forEach(function (s) {
+      var opt = document.createElement("option");
+      opt.value = s.id;
+      opt.textContent = s.label;
+      if (s.id === contact.stav) opt.selected = true;
+      select.appendChild(opt);
+    });
+    applyStatusColors(select, contact.stav);
+    select.addEventListener("change", function () {
+      updateContact(contact.id, "stav", select.value);
+      applyStatusColors(select, select.value);
+      renderStats();
+    });
+    stavTd.appendChild(select);
+    tr.appendChild(stavTd);
+
+    // Datum kontaktu
+    var datumTd = document.createElement("td");
+    datumTd.setAttribute("data-label", "Datum kontaktu");
+    var datumInput = document.createElement("input");
+    datumInput.type = "date";
+    datumInput.className = "date-input";
+    datumInput.value = contact.datumKontaktu || "";
+    datumInput.addEventListener("change", function () {
+      updateContact(contact.id, "datumKontaktu", datumInput.value);
+    });
+    datumTd.appendChild(datumInput);
+    tr.appendChild(datumTd);
+
+    // Dalsi kontakt
+    var dalsiTd = document.createElement("td");
+    dalsiTd.setAttribute("data-label", "Další kontakt");
+    var dalsiInput = document.createElement("input");
+    dalsiInput.type = "date";
+    dalsiInput.className = "date-input";
+    dalsiInput.value = contact.dalsiKontakt || "";
+    if (isOverdue(contact.dalsiKontakt)) {
+      dalsiInput.style.color = "var(--danger)";
+      dalsiInput.style.fontWeight = "700";
+    }
+    dalsiInput.addEventListener("change", function () {
+      updateContact(contact.id, "dalsiKontakt", dalsiInput.value);
+    });
+    dalsiTd.appendChild(dalsiInput);
+    tr.appendChild(dalsiTd);
+
+    // Poznamka (expandable preview)
+    var noteTd = document.createElement("td");
+    noteTd.className = "col-note";
+    noteTd.setAttribute("data-label", "Poznámka");
+    var notePreview = document.createElement("div");
+    notePreview.className = "note-preview";
+    var caret = document.createElement("span");
+    caret.className = "caret";
+    caret.textContent = "▶";
+    var noteText = document.createElement("span");
+    noteText.className = "note-text";
+    var noteVal = contact.poznamka || "";
+    noteText.textContent = noteVal ? noteVal : "(bez poznámky)";
+    if (!noteVal) noteText.style.fontStyle = "italic";
+    notePreview.appendChild(caret);
+    notePreview.appendChild(noteText);
+    notePreview.addEventListener("click", function () {
+      state.expandedNotes[contact.id] = !state.expandedNotes[contact.id];
+      renderTable();
+    });
+    noteTd.appendChild(notePreview);
+    tr.appendChild(noteTd);
+
+    // Akce
+    var actionsTd = document.createElement("td");
+    actionsTd.setAttribute("data-label", "Akce");
+    var actionsWrap = document.createElement("div");
+    actionsWrap.className = "row-actions";
+    var delBtn = document.createElement("button");
+    delBtn.type = "button";
+    delBtn.className = "danger";
+    delBtn.title = "Smazat kontakt";
+    delBtn.textContent = "🗑";
+    delBtn.addEventListener("click", function () {
+      deleteContact(contact.id);
+    });
+    actionsWrap.appendChild(delBtn);
+    actionsTd.appendChild(actionsWrap);
+    tr.appendChild(actionsTd);
+
+    return tr;
+  }
+
+  function buildNoteRow(contact) {
+    var tr = document.createElement("tr");
+    tr.className = "note-full-row";
+    var td = document.createElement("td");
+    td.colSpan = 10;
+    var textarea = document.createElement("textarea");
+    textarea.value = contact.poznamka || "";
+    textarea.placeholder = "Poznámka…";
+    textarea.addEventListener("blur", function () {
+      updateContact(contact.id, "poznamka", textarea.value);
+    });
+    td.appendChild(textarea);
+    tr.appendChild(td);
+    return tr;
+  }
+
+  function applyStatusColors(selectEl, statusId) {
+    var s = statusById[statusId];
+    if (!s) return;
+    selectEl.style.background = s.bg;
+    selectEl.style.color = s.fg;
+  }
+
+  // ---------- CRUD ----------
+  function addContact(data) {
+    var contact = {
+      id: uid(),
+      firma: data.firma || "",
+      web: data.web || "",
+      email: data.email || "",
+      telefon: data.telefon || "",
+      osoba: data.osoba || "",
+      stav: data.stav || "novy",
+      datumKontaktu: data.datumKontaktu || "",
+      dalsiKontakt: data.dalsiKontakt || "",
+      poznamka: data.poznamka || ""
+    };
+    state.contacts.push(contact);
+    save();
+    renderTable();
+  }
+
+  function updateContact(id, field, value) {
+    var contact = state.contacts.find(function (c) { return c.id === id; });
+    if (!contact) return;
+    if (contact[field] === value) return;
+    contact[field] = value;
+    save();
+    if (field === "poznamka") renderTable();
+  }
+
+  function deleteContact(id) {
+    var contact = state.contacts.find(function (c) { return c.id === id; });
+    if (!contact) return;
+    if (!confirm('Opravdu smazat kontakt "' + (contact.firma || "bez názvu") + '"?')) return;
+    state.contacts = state.contacts.filter(function (c) { return c.id !== id; });
+    delete state.expandedNotes[id];
+    save();
+    renderTable();
+  }
+
+  // ---------- CSV Export ----------
+  function csvEscape(val) {
+    var s = String(val == null ? "" : val);
+    if (/[",\n;]/.test(s)) {
+      s = '"' + s.replace(/"/g, '""') + '"';
+    }
+    return s;
+  }
+
+  function exportCsv() {
+    var headers = ["Firma", "Web", "E-mail", "Telefon", "Osoba", "Stav", "Datum kontaktu", "Další kontakt", "Poznámka"];
+    var rows = [headers.join(";")];
+
+    getFilteredSortedContacts().forEach(function (c) {
+      var stavLabel = statusById[c.stav] ? statusById[c.stav].label : c.stav;
+      rows.push([
+        csvEscape(c.firma),
+        csvEscape(c.web),
+        csvEscape(c.email),
+        csvEscape(c.telefon),
+        csvEscape(c.osoba),
+        csvEscape(stavLabel),
+        csvEscape(formatDateDisplay(c.datumKontaktu)),
+        csvEscape(formatDateDisplay(c.dalsiKontakt)),
+        csvEscape(c.poznamka)
+      ].join(";"));
+    });
+
+    var csvContent = "﻿" + rows.join("\r\n");
+    downloadBlob(csvContent, "kontakty_export_" + todayStamp() + ".csv", "text/csv;charset=utf-8;");
+  }
+
+  function todayStamp() {
+    var d = new Date();
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  }
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+
+  function downloadBlob(content, filename, mime) {
+    var blob = new Blob([content], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  // ---------- Backup / Restore JSON ----------
+  function backupJson() {
+    var payload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      contacts: state.contacts
+    };
+    downloadBlob(JSON.stringify(payload, null, 2), "kontakty_zaloha_" + todayStamp() + ".json", "application/json");
+  }
+
+  function restoreJson(file) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = JSON.parse(reader.result);
+        var contacts = Array.isArray(parsed) ? parsed : parsed.contacts;
+        if (!Array.isArray(contacts)) throw new Error("Neplatný formát souboru.");
+
+        var valid = contacts.every(function (c) { return c && typeof c === "object"; });
+        if (!valid) throw new Error("Neplatná struktura kontaktů.");
+
+        var replace = confirm(
+          "Nalezeno " + contacts.length + " kontaktů v souboru.\n\n" +
+          "OK = nahradit stávající data\nZrušit = přidat k stávajícím datům"
+        );
+
+        if (replace) {
+          state.contacts = contacts.map(normalizeImportedContact);
+        } else {
+          var imported = contacts.map(normalizeImportedContact);
+          state.contacts = state.contacts.concat(imported);
+        }
+        save();
+        renderTable();
+        alert("Obnovení dokončeno.");
+      } catch (err) {
+        alert("Chyba při načítání souboru: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function normalizeImportedContact(c) {
+    return {
+      id: c.id || uid(),
+      firma: c.firma || "",
+      web: c.web || "",
+      email: c.email || "",
+      telefon: c.telefon || "",
+      osoba: c.osoba || "",
+      stav: statusById[c.stav] ? c.stav : "novy",
+      datumKontaktu: c.datumKontaktu || "",
+      dalsiKontakt: c.dalsiKontakt || "",
+      poznamka: c.poznamka || ""
+    };
+  }
+
+  // ---------- Modal ----------
+  function openModal() {
+    document.getElementById("contactForm").reset();
+    document.getElementById("f_stav").value = "novy";
+    document.getElementById("modalOverlay").hidden = false;
+    document.getElementById("f_firma").focus();
+  }
+
+  function closeModal() {
+    document.getElementById("modalOverlay").hidden = true;
+  }
+
+  // ---------- Init / Events ----------
+  function bindEvents() {
+    document.getElementById("addContactBtn").addEventListener("click", openModal);
+    document.getElementById("cancelModalBtn").addEventListener("click", closeModal);
+
+    document.getElementById("modalOverlay").addEventListener("click", function (e) {
+      if (e.target === e.currentTarget) closeModal();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !document.getElementById("modalOverlay").hidden) closeModal();
+    });
+
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var firma = document.getElementById("f_firma").value.trim();
+      if (!firma) {
+        alert("Pole „Firma“ je povinné.");
+        return;
+      }
+      addContact({
+        firma: firma,
+        web: document.getElementById("f_web").value.trim(),
+        email: document.getElementById("f_email").value.trim(),
+        telefon: document.getElementById("f_telefon").value.trim(),
+        osoba: document.getElementById("f_osoba").value.trim(),
+        stav: document.getElementById("f_stav").value,
+        datumKontaktu: document.getElementById("f_datumKontaktu").value,
+        dalsiKontakt: document.getElementById("f_dalsiKontakt").value,
+        poznamka: document.getElementById("f_poznamka").value.trim()
+      });
+      closeModal();
+    });
+
+    document.getElementById("searchInput").addEventListener("input", function (e) {
+      state.search = e.target.value;
+      renderTable();
+    });
+
+    document.getElementById("filterStatus").addEventListener("change", function (e) {
+      state.filterStatus = e.target.value;
+      renderTable();
+    });
+
+    document.getElementById("sortSelect").addEventListener("change", function (e) {
+      state.sort = e.target.value;
+      renderTable();
+    });
+
+    document.querySelectorAll("th.sortable").forEach(function (th) {
+      th.addEventListener("click", function () {
+        var key = th.getAttribute("data-sort");
+        if (key === "firma") {
+          state.sort = state.sort === "firma-asc" ? "firma-desc" : "firma-asc";
+        } else if (key === "datumKontaktu") {
+          state.sort = state.sort === "datum-desc" ? "datum-asc" : "datum-desc";
+        } else if (key === "dalsiKontakt") {
+          state.sort = "dalsi-asc";
+        }
+        document.getElementById("sortSelect").value = state.sort;
+        renderTable();
+      });
+    });
+
+    document.getElementById("exportCsvBtn").addEventListener("click", exportCsv);
+    document.getElementById("backupBtn").addEventListener("click", backupJson);
+    document.getElementById("printBtn").addEventListener("click", function () { window.print(); });
+
+    document.getElementById("restoreBtn").addEventListener("click", function () {
+      document.getElementById("restoreFileInput").click();
+    });
+    document.getElementById("restoreFileInput").addEventListener("change", function (e) {
+      var file = e.target.files[0];
+      if (file) restoreJson(file);
+      e.target.value = "";
+    });
+
+    document.getElementById("themeToggleBtn").addEventListener("click", toggleTheme);
+  }
+
+  function init() {
+    initTheme();
+    load();
+    populateStatusSelects();
+    bindEvents();
+    renderTable();
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+</body>
+</html>
